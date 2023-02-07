@@ -106,4 +106,4 @@ theme: next
 deploy:
   type: 'git'
   repo: https://github.com/pierre0210/pierre0210.github.io
-  branch: master
+  branch: github-page
