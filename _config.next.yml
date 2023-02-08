@@ -95,10 +95,10 @@ open_graph:
 # Value before `||` delimiter is the target link, value after `||` delimiter is the name of Font Awesome icon.
 # External url should start with http:// or https://
 menu:
-  #home: / || fa fa-home
+  home: / || fa fa-home
   #about: /about/ || fa fa-user
-  #tags: /tags/ || fa fa-tags
-  #categories: /categories/ || fa fa-th
+  tags: /tags/ || fa fa-tags
+  categories: /categories/ || fa fa-th
   #archives: /archives/ || fa fa-archive
   #schedule: /schedule/ || fa fa-calendar
   #sitemap: /sitemap.xml || fa fa-sitemap
@@ -158,6 +158,7 @@ social:
   E-Mail: mailto:gamelauncher0210@gmail.com || fa fa-envelope
   #Weibo: https://weibo.com/yourname || fab fa-weibo
   Twitter: https://twitter.com/pierre_0210 || fab fa-twitter
+  RSS: /atom.xml || fa fa-rss
   #FB Page: https://www.facebook.com/yourname || fab fa-facebook
   #StackOverflow: https://stackoverflow.com/yourname || fab fa-stack-overflow
   #YouTube: https://youtube.com/yourname || fab fa-youtube
@@ -173,7 +174,7 @@ social_icons:
 links_settings:
   icon: fa fa-globe
   # Available values: block | inline
-  layout: block
+  layout: inline
 
 links:
   #Title: https://example.com
@@ -377,7 +378,7 @@ back2top:
   # Back to top in sidebar.
   sidebar: false
   # Scroll percent label in b2t button.
-  scrollpercent: false
+  scrollpercent: true
 
 # Reading progress bar
 reading_progress:
