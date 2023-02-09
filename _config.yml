@@ -3,14 +3,12 @@
 ## Source: https://github.com/hexojs/hexo/
 
 # Site
-title: Pierre's note
-subtitle: ''
-description: ''
+title: Pierre的踩坑筆記
+subtitle: 'CTF / Web development'
+description: '(╯°Д°)╯ ┻━┻'
 keywords:
 author: Pierre
-language:
-- zh-tw
-- en
+language: zh-TW
 timezone: 'Asia/Taipei'
 
 # URL
