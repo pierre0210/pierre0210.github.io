@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
-  <title>Pierre&#39;s note</title>
+  <title>Pierre的踩坑筆記</title>
   <icon>https://pierre0210.github.io/icon.png</icon>
-  
+  <subtitle>CTF / Web development</subtitle>
   <link href="https://pierre0210.github.io/atom.xml" rel="self"/>
   
   <link href="https://pierre0210.github.io/"/>
