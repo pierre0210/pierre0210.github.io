@@ -4,7 +4,7 @@
 
 # Site
 title: Pierre的踩坑筆記
-subtitle: 'CTF / Web development'
+subtitle: 'Web development / CTF'
 description: '(╯°Д°)╯ ┻━┻'
 keywords:
 author: Pierre
@@ -119,3 +119,7 @@ feed:
   icon: icon.png
   autodiscovery: true
   template:
+
+marked:
+  prependRoot: true
+  postAsset: true
