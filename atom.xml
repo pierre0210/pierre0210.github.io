@@ -2,11 +2,11 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
   <title>Pierre的踩坑筆記</title>
   <icon>https://pierre0210.github.io/icon.png</icon>
-  <subtitle>CTF / Web development</subtitle>
+  <subtitle>Web development / CTF</subtitle>
   <link href="https://pierre0210.github.io/atom.xml" rel="self"/>
   
   <link href="https://pierre0210.github.io/"/>
-  <updated>2023-02-07T14:08:24.395Z</updated>
+  <updated>2023-02-10T14:37:47.315Z</updated>
   <id>https://pierre0210.github.io/</id>
   
   <author>
@@ -15,6 +15,27 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>DNS sinkhole</title>
+    <link href="https://pierre0210.github.io/2023/02/09/dns-sinkhole/"/>
+    <id>https://pierre0210.github.io/2023/02/09/dns-sinkhole/</id>
+    <published>2023-02-09T12:00:00.000Z</published>
+    <updated>2023-02-10T14:37:47.315Z</updated>
+    
+    
+    <summary type="html">DNS sinkhole是一種特殊的DNS伺服器，對黑名單內的域名查詢給出無效結果，以此達到阻擋特定網域的目的，本文將以Typescript進行實作。</summary>
+    
+    
+    
+    <category term="實作" scheme="https://pierre0210.github.io/categories/%E5%AF%A6%E4%BD%9C/"/>
+    
+    
+    <category term="Node.js" scheme="https://pierre0210.github.io/tags/Node-js/"/>
+    
+    <category term="Typescript" scheme="https://pierre0210.github.io/tags/Typescript/"/>
+    
+  </entry>
   
   <entry>
     <title>Hello World</title>
