@@ -6,7 +6,7 @@
   <link href="https://pierre0210.github.io/atom.xml" rel="self"/>
   
   <link href="https://pierre0210.github.io/"/>
-  <updated>2023-02-18T13:12:36.717Z</updated>
+  <updated>2023-02-18T13:17:29.360Z</updated>
   <id>https://pierre0210.github.io/</id>
   
   <author>
@@ -21,17 +21,19 @@
     <link href="https://pierre0210.github.io/2023/02/18/incognito-4/"/>
     <id>https://pierre0210.github.io/2023/02/18/incognito-4/</id>
     <published>2023-02-18T12:18:45.000Z</published>
-    <updated>2023-02-18T13:12:36.717Z</updated>
+    <updated>2023-02-18T13:17:29.360Z</updated>
     
     
     <summary type="html">Incognito CTF 解題紀錄</summary>
     
     
     
-    <category term="筆記" scheme="https://pierre0210.github.io/categories/%E7%AD%86%E8%A8%98/"/>
+    <category term="比賽" scheme="https://pierre0210.github.io/categories/%E6%AF%94%E8%B3%BD/"/>
     
     
     <category term="CTF" scheme="https://pierre0210.github.io/tags/CTF/"/>
+    
+    <category term="Python" scheme="https://pierre0210.github.io/tags/Python/"/>
     
   </entry>
   
