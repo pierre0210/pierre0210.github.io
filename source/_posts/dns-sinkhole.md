@@ -1,3 +1,4 @@
+---
 title: DNS sinkhole
 tags: ['Node.js', 'Typescript']
 categories: ['實作']
