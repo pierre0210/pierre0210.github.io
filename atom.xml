@@ -77,4 +77,27 @@
     
   </entry>
   
+  <entry>
+    <title>IMU 101</title>
+    <link href="https://pierre0210.github.io/2022/12/10/imu101/"/>
+    <id>https://pierre0210.github.io/2022/12/10/imu101/</id>
+    <published>2022-12-10T10:12:06.000Z</published>
+    <updated>2023-04-17T11:06:08.201Z</updated>
+    
+    
+    <summary type="html">線性代數期末報告：使用不同濾波器處理IMU原始數據</summary>
+    
+    
+    
+    <category term="實作" scheme="https://pierre0210.github.io/categories/%E5%AF%A6%E4%BD%9C/"/>
+    
+    
+    <category term="Python" scheme="https://pierre0210.github.io/tags/Python/"/>
+    
+    <category term="STM32" scheme="https://pierre0210.github.io/tags/STM32/"/>
+    
+    <category term="C" scheme="https://pierre0210.github.io/tags/C/"/>
+    
+  </entry>
+  
 </feed>
