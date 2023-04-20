@@ -29,14 +29,14 @@
 <meta property="og:site_name" content="Pierre的踩坑筆記">
 <meta property="og:description" content="Summary for https:&#x2F;&#x2F;arxiv.org&#x2F;abs&#x2F;1311.2524">
 <meta property="og:locale" content="zh_TW">
-<meta property="og:image" content="https://i.imgur.com/PpfvPAi.png">
-<meta property="og:image" content="https://i.imgur.com/kDeVHFb.png">
+<meta property="og:image" content="https://pierre0210.github.io/2023/03/31/rcnn/PpfvPAi.png">
+<meta property="og:image" content="https://pierre0210.github.io/2023/03/31/rcnn/kDeVHFb.png">
 <meta property="article:published_time" content="2023-03-31T05:45:17.000Z">
-<meta property="article:modified_time" content="2023-03-31T06:51:54.846Z">
+<meta property="article:modified_time" content="2023-04-20T10:43:35.832Z">
 <meta property="article:author" content="Pierre">
 <meta property="article:tag" content="CV">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://i.imgur.com/PpfvPAi.png">
+<meta name="twitter:image" content="https://pierre0210.github.io/2023/03/31/rcnn/PpfvPAi.png">
 
 
 <link rel="canonical" href="https://pierre0210.github.io/2023/03/31/rcnn/">
@@ -215,9 +215,8 @@
         <i class="far fa-calendar"></i>
       </span>
       <span class="post-meta-item-text">發表於</span>
-      
 
-      <time title="創建時間：2023-03-31 13:45:17 / 修改時間：14:51:54" itemprop="dateCreated datePublished" datetime="2023-03-31T13:45:17+08:00">2023-03-31</time>
+      <time title="創建時間：2023-03-31 13:45:17" itemprop="dateCreated datePublished" datetime="2023-03-31T13:45:17+08:00">2023-03-31</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -252,8 +251,8 @@
 <li>$s_{fill}(r_i,r_j)$ measures how well two regions fit into each other in order to fill gaps and avoid any holes in merging process. Define $BB_{ij}$ to be a bounding box around $r_i$ and $r_j$. $s_{fill}(r_i,r_j)&#x3D;1-\dfrac{size(BB_{ij})-size(r_i)-size(r_j)}{size(im)}$</li>
 </ol>
 <p>The final similarity is the combination of the four measures where $a_i$ is either $0$ or $1$.<br>$$s(r_i,r_j)&#x3D;a_1s_{color}(r_i,r_j)+a_2s_{texture}(r_i,r_j)+a_3s_{size}(r_i,r_j)+a_4s_{fill}(r_i,r_j)$$</p>
-<p><img src="https://i.imgur.com/PpfvPAi.png"></p>
-<h2 id="Feature-extraction"><a href="#Feature-extraction" class="headerlink" title="Feature extraction"></a>Feature extraction</h2><p>First, the arbitrary-shaped regions are warped to the required size. Then the extraction step is done by foward a <a target="_blank" rel="noopener" href="https://stackoverflow.com/questions/44788133/how-does-mean-image-subtraction-work">mean-substracted</a> 227x227 RGB image through AlexNet which is pre-trained on ImageNet dataset.<br><img src="https://i.imgur.com/kDeVHFb.png"></p>
+<p><img src="/2023/03/31/rcnn/PpfvPAi.png"></p>
+<h2 id="Feature-extraction"><a href="#Feature-extraction" class="headerlink" title="Feature extraction"></a>Feature extraction</h2><p>First, the arbitrary-shaped regions are warped to the required size. Then the extraction step is done by foward a <a target="_blank" rel="noopener" href="https://stackoverflow.com/questions/44788133/how-does-mean-image-subtraction-work">mean-substracted</a> 227x227 RGB image through AlexNet which is pre-trained on ImageNet dataset.<br><img src="/2023/03/31/rcnn/kDeVHFb.png"></p>
 <blockquote>
 <p>Here might be confusing as the original paper <a target="_blank" rel="noopener" href="https://proceedings.neurips.cc/paper/2012/file/c399862d3b9d6b76c8436e924a68c45b-Paper.pdf">ImageNet Classification with Deep Convolutional Neural Networks</a> states that the size of input image is 224x224. According to <a target="_blank" rel="noopener" href="https://datascience.stackexchange.com/questions/29245/what-is-the-input-size-of-alex-net">this discussion</a> this is a mistake, the layer size will only make sense if the input size is 227x227. Moreover, Caffe framework, whick is used in this paper, expects the same input size as well.</p>
 </blockquote>

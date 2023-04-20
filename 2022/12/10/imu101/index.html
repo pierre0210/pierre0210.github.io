@@ -29,23 +29,23 @@
 <meta property="og:site_name" content="Pierre的踩坑筆記">
 <meta property="og:description" content="線性代數期末報告：使用不同濾波器處理IMU原始數據">
 <meta property="og:locale" content="zh_TW">
-<meta property="og:image" content="https://i.imgur.com/uRxtdgW.png">
-<meta property="og:image" content="https://i.imgur.com/x1Xlfsk.png">
-<meta property="og:image" content="https://i.imgur.com/94sdzbz.png">
-<meta property="og:image" content="https://i.imgur.com/7OP0UBt.png">
-<meta property="og:image" content="https://i.imgur.com/edJJ7RM.png">
-<meta property="og:image" content="https://i.imgur.com/px2mxKe.jpg">
-<meta property="og:image" content="https://i.imgur.com/o9QcK44.gif">
-<meta property="og:image" content="https://i.imgur.com/kqVK3qr.png">
-<meta property="og:image" content="https://i.imgur.com/jM9T7T6.png">
+<meta property="og:image" content="https://pierre0210.github.io/2022/12/10/imu101/uRxtdgW.png">
+<meta property="og:image" content="https://pierre0210.github.io/2022/12/10/imu101/x1Xlfsk.png">
+<meta property="og:image" content="https://pierre0210.github.io/2022/12/10/imu101/94sdzbz.png">
+<meta property="og:image" content="https://pierre0210.github.io/2022/12/10/imu101/7OP0UBt.png">
+<meta property="og:image" content="https://pierre0210.github.io/2022/12/10/imu101/edJJ7RM.png">
+<meta property="og:image" content="https://pierre0210.github.io/2022/12/10/imu101/px2mxKe.jpg">
+<meta property="og:image" content="https://pierre0210.github.io/2022/12/10/imu101/o9QcK44.gif">
+<meta property="og:image" content="https://pierre0210.github.io/2022/12/10/imu101/kqVK3qr.png">
+<meta property="og:image" content="https://pierre0210.github.io/2022/12/10/imu101/jM9T7T6.png">
 <meta property="article:published_time" content="2022-12-10T10:12:06.000Z">
-<meta property="article:modified_time" content="2023-04-17T11:06:08.201Z">
+<meta property="article:modified_time" content="2023-04-20T10:34:19.111Z">
 <meta property="article:author" content="Pierre">
 <meta property="article:tag" content="Python">
 <meta property="article:tag" content="STM32">
 <meta property="article:tag" content="C">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://i.imgur.com/uRxtdgW.png">
+<meta name="twitter:image" content="https://pierre0210.github.io/2022/12/10/imu101/uRxtdgW.png">
 
 
 <link rel="canonical" href="https://pierre0210.github.io/2022/12/10/imu101/">
@@ -229,13 +229,6 @@
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">更新於</span>
-      <time title="修改時間：2023-04-17 19:06:08" itemprop="dateModified" datetime="2023-04-17T19:06:08+08:00">2023-04-17</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
         <i class="far fa-folder"></i>
       </span>
       <span class="post-meta-item-text">分類於</span>
@@ -259,11 +252,11 @@
 <li>IMU ＝ inertia measurement unit</li>
 <li>3-axis accelerometer＋3-axis gyroscopes</li>
 </ul>
-<img src="https://i.imgur.com/uRxtdgW.png" width="500">
+<img src="./uRxtdgW.png" width="500">
 
 <p><font style="font-size: 10px">source: <a target="_blank" rel="noopener" href="https://www.ceva-dsp.com/ourblog/what-is-an-imu-sensor/">https://www.ceva-dsp.com/ourblog/what-is-an-imu-sensor/</a><br></font></p>
 <h2 id="為什麼需要濾波？"><a href="#為什麼需要濾波？" class="headerlink" title="為什麼需要濾波？"></a>為什麼需要濾波？</h2><p>加速度計會產生高頻振蕩的噪音訊號，又陀螺儀是將角速度對時間積分產生角度，故<strong>易產生誤差</strong>。</p>
-<p><img src="https://i.imgur.com/x1Xlfsk.png"></p>
+<p><img src="/2022/12/10/imu101/x1Xlfsk.png"></p>
 <p><font style="font-size:
 10px;">source: <a target="_blank" rel="noopener" href="https://stackoverflow.com/questions/1586658/combine-gyroscope-and-accelerometer-data">https://stackoverflow.com/questions/1586658/combine-gyroscope-and-accelerometer-data</a></font></p>
 <h2 id="互補濾波"><a href="#互補濾波" class="headerlink" title="互補濾波"></a>互補濾波</h2><h3 id="Complementary-filter"><a href="#Complementary-filter" class="headerlink" title="Complementary filter"></a>Complementary filter</h3><ul>
@@ -272,7 +265,7 @@
 </ul>
 <p><strong>定時</strong>對加速度採樣的角度取平均值 + <strong>短時間</strong>內採用陀螺儀得到的角度</p>
 <p>加速度計要濾掉高頻訊號，陀螺儀要濾掉低頻訊號</p>
-<p><img src="https://i.imgur.com/94sdzbz.png"><br><font style="font-size: 10px;"><a target="_blank" rel="noopener" href="https://stackoverflow.com/questions/1586658/combine-gyroscope-and-accelerometer-data">https://stackoverflow.com/questions/1586658/combine-gyroscope-and-accelerometer-data</a></font></p>
+<p><img src="/2022/12/10/imu101/94sdzbz.png"><br><font style="font-size: 10px;"><a target="_blank" rel="noopener" href="https://stackoverflow.com/questions/1586658/combine-gyroscope-and-accelerometer-data">https://stackoverflow.com/questions/1586658/combine-gyroscope-and-accelerometer-data</a></font></p>
 <p>$$<br>\text{angle’} &#x3D; \alpha(\text{angle} + \text{gyro} \times dt) + (1-\alpha)\times(X_a)<br>$$</p>
 <ul>
 <li>$\text{angle’}$為得到實際角度，$\text{angle}$為前一時刻角度</li>
@@ -315,12 +308,12 @@
 <li>$K_k$ : 卡爾曼增益 (最小化$P_k$)</li>
 <li>$H &#x3D;<br>  \begin{bmatrix}<br>  1 &amp; 0<br>  \end{bmatrix}$</li>
 </ul>
-<p><img src="https://i.imgur.com/7OP0UBt.png"></p>
-<h2 id="實作"><a href="#實作" class="headerlink" title="實作"></a>實作</h2><h3 id="裝置-amp-流程"><a href="#裝置-amp-流程" class="headerlink" title="裝置&amp;流程"></a>裝置&amp;流程</h3><img src="https://i.imgur.com/edJJ7RM.png" width="650">
+<p><img src="/2022/12/10/imu101/7OP0UBt.png"></p>
+<h2 id="實作"><a href="#實作" class="headerlink" title="實作"></a>實作</h2><h3 id="裝置-amp-流程"><a href="#裝置-amp-流程" class="headerlink" title="裝置&amp;流程"></a>裝置&amp;流程</h3><img src="./edJJ7RM.png" width="650">
 
-<img src="https://i.imgur.com/px2mxKe.jpg" height="650">
+<img src="./px2mxKe.jpg" height="650">
 
-<h3 id="測試結果-Part-1"><a href="#測試結果-Part-1" class="headerlink" title="測試結果 Part 1"></a>測試結果 Part 1</h3><p><img src="https://i.imgur.com/o9QcK44.gif"></p>
+<h3 id="測試結果-Part-1"><a href="#測試結果-Part-1" class="headerlink" title="測試結果 Part 1"></a>測試結果 Part 1</h3><p><img src="/2022/12/10/imu101/o9QcK44.gif"></p>
 <h3 id="測試結果-Part-2"><a href="#測試結果-Part-2" class="headerlink" title="測試結果 Part 2"></a>測試結果 Part 2</h3><table>
 <thead>
 <tr>
@@ -329,8 +322,8 @@
 </tr>
 </thead>
 <tbody><tr>
-<td><img src="https://i.imgur.com/kqVK3qr.png"></td>
-<td><img src="https://i.imgur.com/jM9T7T6.png"></td>
+<td><img src="/2022/12/10/imu101/kqVK3qr.png"></td>
+<td><img src="/2022/12/10/imu101/jM9T7T6.png"></td>
 </tr>
 </tbody></table>
 <h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><font style="font-size: 13px;">
