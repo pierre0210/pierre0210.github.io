@@ -50,9 +50,9 @@
     <category term="比賽" scheme="https://pierre0210.github.io/categories/%E6%AF%94%E8%B3%BD/"/>
     
     
-    <category term="CTF" scheme="https://pierre0210.github.io/tags/CTF/"/>
-    
     <category term="Python" scheme="https://pierre0210.github.io/tags/Python/"/>
+    
+    <category term="CTF" scheme="https://pierre0210.github.io/tags/CTF/"/>
     
   </entry>
   
@@ -92,9 +92,9 @@
     <category term="實作" scheme="https://pierre0210.github.io/categories/%E5%AF%A6%E4%BD%9C/"/>
     
     
-    <category term="Python" scheme="https://pierre0210.github.io/tags/Python/"/>
-    
     <category term="STM32" scheme="https://pierre0210.github.io/tags/STM32/"/>
+    
+    <category term="Python" scheme="https://pierre0210.github.io/tags/Python/"/>
     
     <category term="C" scheme="https://pierre0210.github.io/tags/C/"/>
     
