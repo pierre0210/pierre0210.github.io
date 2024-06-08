@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: dark)"><meta name="generator" content="Hexo 7.2.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Noto+Sans+TC:300,300italic,400,400italic,700,700italic%7CUbuntu:300,300italic,400,400italic,700,700italic%7CRoboto+Mono:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha256-XOqroi11tY4EFQMR9ZYwZWKj5ZXiftSx36RRuC3anlA=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pace/1.2.4/themes/black/pace-theme-loading-bar.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pace/1.2.4/pace.min.js" integrity="sha256-gqd7YTjg/BtfqWSwsJOvndl0Bxc8gFImLEkXQT8+qj0=" crossorigin="anonymous"></script>
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"pierre0210.github.io","root":"/","images":"/images","scheme":"Gemini","darkmode":true,"version":"8.20.0","exturl":false,"sidebar":{"position":"right","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"copycode":{"enable":true,"style":"mac"},"fold":{"enable":false,"height":500},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜尋...","empty":"我們無法找到任何有關 ${query} 的搜索結果","hits_time":"${hits} 找到 ${time} 個結果","hits":"找到 ${hits} 個結果"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="線性代數期末報告：使用不同濾波器處理IMU原始數據">
+<meta property="og:type" content="article">
+<meta property="og:title" content="IMU 101">
+<meta property="og:url" content="https://pierre0210.github.io/2022/12/10/imu101/index.html">
+<meta property="og:site_name" content="Pierre的踩坑筆記">
+<meta property="og:description" content="線性代數期末報告：使用不同濾波器處理IMU原始數據">
+<meta property="og:locale" content="zh_TW">
+<meta property="og:image" content="https://pierre0210.github.io/2022/12/10/imu101/uRxtdgW.png">
+<meta property="og:image" content="https://pierre0210.github.io/2022/12/10/imu101/x1Xlfsk.png">
+<meta property="og:image" content="https://pierre0210.github.io/2022/12/10/imu101/94sdzbz.png">
+<meta property="og:image" content="https://pierre0210.github.io/2022/12/10/imu101/7OP0UBt.png">
+<meta property="og:image" content="https://pierre0210.github.io/2022/12/10/imu101/edJJ7RM.png">
+<meta property="og:image" content="https://pierre0210.github.io/2022/12/10/imu101/px2mxKe.jpg">
+<meta property="og:image" content="https://pierre0210.github.io/2022/12/10/imu101/o9QcK44.gif">
+<meta property="og:image" content="https://pierre0210.github.io/2022/12/10/imu101/kqVK3qr.png">
+<meta property="og:image" content="https://pierre0210.github.io/2022/12/10/imu101/jM9T7T6.png">
+<meta property="article:published_time" content="2022-12-10T10:12:06.000Z">
+<meta property="article:modified_time" content="2024-06-08T12:34:55.479Z">
+<meta property="article:author" content="Pierre">
+<meta property="article:tag" content="STM32">
+<meta property="article:tag" content="Python">
+<meta property="article:tag" content="C">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://pierre0210.github.io/2022/12/10/imu101/uRxtdgW.png">
+
+
+<link rel="canonical" href="https://pierre0210.github.io/2022/12/10/imu101/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-TW","comments":true,"permalink":"https://pierre0210.github.io/2022/12/10/imu101/","path":"2022/12/10/imu101/","title":"IMU 101"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>IMU 101 | Pierre的踩坑筆記</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+<link rel="alternate" href="/atom.xml" title="Pierre的踩坑筆記" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切換導航欄" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">Pierre的踩坑筆記</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">Web development / CTF</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜尋" role="button">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首頁</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>標籤</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分類</a></li>
+  </ul>
+</nav>
+
+
+
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目錄
+        </li>
+        <li class="sidebar-nav-overview">
+          本站概要
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#IMU-101"><span class="nav-number">1.</span> <span class="nav-text">IMU 101</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#What-is-IMU"><span class="nav-number">1.0.1.</span> <span class="nav-text">What is IMU?</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%82%BA%E4%BB%80%E9%BA%BC%E9%9C%80%E8%A6%81%E6%BF%BE%E6%B3%A2%EF%BC%9F"><span class="nav-number">1.1.</span> <span class="nav-text">為什麼需要濾波？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BA%92%E8%A3%9C%E6%BF%BE%E6%B3%A2"><span class="nav-number">1.2.</span> <span class="nav-text">互補濾波</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Complementary-filter"><span class="nav-number">1.2.1.</span> <span class="nav-text">Complementary filter</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8D%A1%E7%88%BE%E6%9B%BC%E6%BF%BE%E6%B3%A2"><span class="nav-number">1.3.</span> <span class="nav-text">卡爾曼濾波</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Kalman-filter"><span class="nav-number">1.3.1.</span> <span class="nav-text">Kalman filter</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%9F%BA%E6%9C%AC%E6%A8%A1%E5%9E%8B-%E7%9C%9F%E5%AF%A6%E7%8B%80%E6%85%8B"><span class="nav-number">1.3.2.</span> <span class="nav-text">基本模型-真實狀態</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%9F%BA%E6%9C%AC%E6%A8%A1%E5%9E%8B-%E8%A7%80%E6%B8%AC"><span class="nav-number">1.3.3.</span> <span class="nav-text">基本模型-觀測</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%A0%90%E6%B8%AC"><span class="nav-number">1.3.4.</span> <span class="nav-text">預測</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BF%AE%E6%AD%A3"><span class="nav-number">1.3.5.</span> <span class="nav-text">修正</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AF%A6%E4%BD%9C"><span class="nav-number">1.4.</span> <span class="nav-text">實作</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%A3%9D%E7%BD%AE-%E6%B5%81%E7%A8%8B"><span class="nav-number">1.4.1.</span> <span class="nav-text">裝置&amp;流程</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%B8%AC%E8%A9%A6%E7%B5%90%E6%9E%9C-Part-1"><span class="nav-number">1.4.2.</span> <span class="nav-text">測試結果 Part 1</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%B8%AC%E8%A9%A6%E7%B5%90%E6%9E%9C-Part-2"><span class="nav-number">1.4.3.</span> <span class="nav-text">測試結果 Part 2</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Reference"><span class="nav-number">1.5.</span> <span class="nav-text">Reference</span></a></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Pierre"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">Pierre</p>
+  <div class="site-description" itemprop="description">(╯°Д°)╯ ┻━┻</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">5</span>
+          <span class="site-state-item-name">文章</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-name">分類</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">7</span>
+        <span class="site-state-item-name">標籤</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/pierre0210" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;pierre0210" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i></a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:gamelauncher0210@gmail.com" title="E-Mail → mailto:gamelauncher0210@gmail.com" rel="noopener me" target="_blank"><i class="fa fa-envelope fa-fw"></i></a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://twitter.com/pierre_0210" title="Twitter → https:&#x2F;&#x2F;twitter.com&#x2F;pierre_0210" rel="noopener me" target="_blank"><i class="fab fa-twitter fa-fw"></i></a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="/atom.xml" title="RSS → &#x2F;atom.xml" rel="noopener me"><i class="fa fa-rss fa-fw"></i></a>
+      </span>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-TW">
+    <link itemprop="mainEntityOfPage" href="https://pierre0210.github.io/2022/12/10/imu101/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="Pierre">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Pierre的踩坑筆記">
+      <meta itemprop="description" content="(╯°Д°)╯ ┻━┻">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="IMU 101 | Pierre的踩坑筆記">
+      <meta itemprop="description" content="線性代數期末報告：使用不同濾波器處理IMU原始數據">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          IMU 101
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">發表於</span>
+
+      <time title="創建時間：2022-12-10 18:12:06" itemprop="dateCreated datePublished" datetime="2022-12-10T18:12:06+08:00">2022-12-10</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分類於</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E5%AF%A6%E4%BD%9C/" itemprop="url" rel="index"><span itemprop="name">實作</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+            <div class="post-description">線性代數期末報告：使用不同濾波器處理IMU原始數據</div>
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><h1 id="IMU-101"><a href="#IMU-101" class="headerlink" title="IMU 101"></a>IMU 101</h1><h3 id="What-is-IMU"><a href="#What-is-IMU" class="headerlink" title="What is IMU?"></a>What is IMU?</h3><ul>
+<li>IMU ＝ inertia measurement unit</li>
+<li>3-axis accelerometer＋3-axis gyroscopes</li>
+</ul>
+<img src="./uRxtdgW.png" width="500">
+
+<p><font style="font-size: 10px">source: <a target="_blank" rel="noopener" href="https://www.ceva-dsp.com/ourblog/what-is-an-imu-sensor/">https://www.ceva-dsp.com/ourblog/what-is-an-imu-sensor/</a><br></font></p>
+<h2 id="為什麼需要濾波？"><a href="#為什麼需要濾波？" class="headerlink" title="為什麼需要濾波？"></a>為什麼需要濾波？</h2><p>加速度計會產生高頻振蕩的噪音訊號，又陀螺儀是將角速度對時間積分產生角度，故<strong>易產生誤差</strong>。</p>
+<p><img src="/2022/12/10/imu101/x1Xlfsk.png"></p>
+<p><font style="font-size:
+10px;">source: <a target="_blank" rel="noopener" href="https://stackoverflow.com/questions/1586658/combine-gyroscope-and-accelerometer-data">https://stackoverflow.com/questions/1586658/combine-gyroscope-and-accelerometer-data</a></font></p>
+<h2 id="互補濾波"><a href="#互補濾波" class="headerlink" title="互補濾波"></a>互補濾波</h2><h3 id="Complementary-filter"><a href="#Complementary-filter" class="headerlink" title="Complementary filter"></a>Complementary filter</h3><ul>
+<li>加速度計計算瞬時傾角誤差比較大</li>
+<li>陀螺儀積分結果易受長時間影響</li>
+</ul>
+<p><strong>定時</strong>對加速度採樣的角度取平均值 + <strong>短時間</strong>內採用陀螺儀得到的角度</p>
+<p>加速度計要濾掉高頻訊號，陀螺儀要濾掉低頻訊號</p>
+<p><img src="/2022/12/10/imu101/94sdzbz.png"><br><font style="font-size: 10px;"><a target="_blank" rel="noopener" href="https://stackoverflow.com/questions/1586658/combine-gyroscope-and-accelerometer-data">https://stackoverflow.com/questions/1586658/combine-gyroscope-and-accelerometer-data</a></font></p>
+<p>$$<br>\text{angle’} &#x3D; \alpha(\text{angle} + \text{gyro} \times dt) + (1-\alpha)\times(X_a)<br>$$</p>
+<ul>
+<li>$\text{angle’}$為得到實際角度，$\text{angle}$為前一時刻角度</li>
+<li>$\text{gyro}$為陀螺儀值(角速度)，$dt$為計算週期</li>
+<li>$X_A$為加速度數據換算後的角度值</li>
+<li>$\alpha &#x3D; 0.98$</li>
+</ul>
+<h2 id="卡爾曼濾波"><a href="#卡爾曼濾波" class="headerlink" title="卡爾曼濾波"></a>卡爾曼濾波</h2><h3 id="Kalman-filter"><a href="#Kalman-filter" class="headerlink" title="Kalman filter"></a>Kalman filter</h3><ul>
+<li>線性</li>
+<li>純時域</li>
+<li>高斯雜訊</li>
+</ul>
+<h3 id="基本模型-真實狀態"><a href="#基本模型-真實狀態" class="headerlink" title="基本模型-真實狀態"></a>基本模型-真實狀態</h3><p>$$<br>\displaylines{<br>  x_k &#x3D; Fx_{k-1}+Bu_k+w_k \\<br>  w_k \sim N(0,\ Q_k)<br>}<br>$$</p>
+<ul>
+<li>$x_k$ : $k$ 時刻狀態 </li>
+<li>$F$ : 狀態變換矩陣</li>
+<li>$u_k$ : 控制向量</li>
+<li>$B$ : 控制輸入模型</li>
+<li>$w_k$ : 過程雜訊</li>
+<li>$Q_k$ : $w_k$ 的共變異數矩陣</li>
+</ul>
+<h3 id="基本模型-觀測"><a href="#基本模型-觀測" class="headerlink" title="基本模型-觀測"></a>基本模型-觀測</h3><p>$$<br>\displaylines{<br>  z_k &#x3D; Hx_k + v_k \\<br>  v_k \sim N(0, R_k)<br>}<br>$$</p>
+<ul>
+<li>$z_k$ : $k$ 時刻測量到的狀態</li>
+<li>$H$ : 觀測模型</li>
+<li>$v_k$ : 觀測誤差</li>
+<li>$R_k$ : $v_k$ 的共變異數矩陣</li>
+</ul>
+<h3 id="預測"><a href="#預測" class="headerlink" title="預測"></a>預測</h3><p>$$<br>\displaylines{<br>  \hat{x}_ k^{-} &#x3D; F\hat{x}_{k-1}+B\dot{\theta}_k \\<br>}<br>$$</p>
+<ul>
+<li>$F&#x3D;<br>  \begin{bmatrix}<br>  1 &amp; -\Delta t \\<br>  0 &amp; 1<br>  \end{bmatrix} \<br>  \hat{x}_k &#x3D;<br>  \begin{bmatrix}<br>  \theta \\<br>  \dot{\theta}_b<br>  \end{bmatrix}_k \<br>  B&#x3D;<br>  \begin{bmatrix}<br>  \Delta t \\<br>  0<br>  \end{bmatrix}$</li>
+<li>$P_k$ : $x_k$ 的誤差共變異數矩陣<ul>
+<li>$P_k &#x3D; E[(x_k - E[x_k])(x_k - E[x_k])^T]$</li>
+<li>$cov(AX+B,\ AX+B) &#x3D; var(AX+B)\ &#x3D; A\ var(X)\ A^T$</li>
+</ul>
+</li>
+</ul>
+<h3 id="修正"><a href="#修正" class="headerlink" title="修正"></a>修正</h3><p>$$<br>\displaylines{<br>  K_k &#x3D; P_k^-H^T(HP^-_kH^T+R)^{-1} \\<br>  \hat{x}_k &#x3D; \hat{x}^-_k + K_k(z_k-H\hat{x}_k^-) \\<br>  P_k &#x3D; (I-K_kH)P^-_k<br>}<br>$$</p>
+<ul>
+<li>$K_k$ : 卡爾曼增益 (最小化$P_k$)</li>
+<li>$H &#x3D;<br>  \begin{bmatrix}<br>  1 &amp; 0<br>  \end{bmatrix}$</li>
+</ul>
+<p><img src="/2022/12/10/imu101/7OP0UBt.png"></p>
+<h2 id="實作"><a href="#實作" class="headerlink" title="實作"></a>實作</h2><h3 id="裝置-流程"><a href="#裝置-流程" class="headerlink" title="裝置&amp;流程"></a>裝置&amp;流程</h3><img src="./edJJ7RM.png" width="650">
+
+<img src="./px2mxKe.jpg" height="650">
+
+<h3 id="測試結果-Part-1"><a href="#測試結果-Part-1" class="headerlink" title="測試結果 Part 1"></a>測試結果 Part 1</h3><p><img src="/2022/12/10/imu101/o9QcK44.gif"></p>
+<h3 id="測試結果-Part-2"><a href="#測試結果-Part-2" class="headerlink" title="測試結果 Part 2"></a>測試結果 Part 2</h3><table>
+<thead>
+<tr>
+<th>Pitch</th>
+<th>Row</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><img src="/2022/12/10/imu101/kqVK3qr.png"></td>
+<td><img src="/2022/12/10/imu101/jM9T7T6.png"></td>
+</tr>
+</tbody></table>
+<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><font style="font-size: 13px;">
+
+<p><a target="_blank" rel="noopener" href="https://www.cs.unc.edu/~welch/media/pdf/kalman_intro.pdf">Welch, G. and Bishop, G. (2006). <em>An Introduction to the Kalman Filter</em>, Department of Computer Science University of North Carolina at Chapel Hill</a><br><a target="_blank" rel="noopener" href="http://blog.tkjelectronics.dk/2012/09/a-practical-approach-to-kalman-filter-and-how-to-implement-it/">Lauszus. (2012). <em>A practical approach to Kalman filter and how to implement it</em>, TKJ Electronics</a></p>
+</font>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/STM32/" rel="tag"># STM32</a>
+              <a href="/tags/Python/" rel="tag"># Python</a>
+              <a href="/tags/C/" rel="tag"># C</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+            </div>
+            <div class="post-nav-item">
+                <a href="/2023/02/09/dns-sinkhole/" rel="next" title="DNS sinkhole">
+                  DNS sinkhole <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 
+    <span itemprop="copyrightYear">2024</span>
+    <span class="with-love">
+      <i class="fa fa-code-commit"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">Pierre</span>
+  </div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a> 強力驅動
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="回到頂端">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script size="200" alpha="0.5" zIndex="-1" src="https://cdnjs.cloudflare.com/ajax/libs/ribbon.js/1.0.2/ribbon.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/sidebar.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+  <script src="/js/third-party/pace.js"></script>
+
+
+  
+
+
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">true</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"none","js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.js","integrity":"sha256-MASABpB4tYktI2Oitl4t+78w/lyA+D7b/s9GEP0JOGI="}}</script>
+<script src="/js/third-party/math/mathjax.js"></script>
+
+
+
+</body>
+</html>

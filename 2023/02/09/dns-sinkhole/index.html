@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: dark)"><meta name="generator" content="Hexo 7.2.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Noto+Sans+TC:300,300italic,400,400italic,700,700italic%7CUbuntu:300,300italic,400,400italic,700,700italic%7CRoboto+Mono:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha256-XOqroi11tY4EFQMR9ZYwZWKj5ZXiftSx36RRuC3anlA=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pace/1.2.4/themes/black/pace-theme-loading-bar.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pace/1.2.4/pace.min.js" integrity="sha256-gqd7YTjg/BtfqWSwsJOvndl0Bxc8gFImLEkXQT8+qj0=" crossorigin="anonymous"></script>
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"pierre0210.github.io","root":"/","images":"/images","scheme":"Gemini","darkmode":true,"version":"8.20.0","exturl":false,"sidebar":{"position":"right","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"copycode":{"enable":true,"style":"mac"},"fold":{"enable":false,"height":500},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜尋...","empty":"我們無法找到任何有關 ${query} 的搜索結果","hits_time":"${hits} 找到 ${time} 個結果","hits":"找到 ${hits} 個結果"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="DNS sinkhole是一種特殊的DNS伺服器，對黑名單內的域名查詢給出無效結果，以此達到阻擋特定網域的目的，本文將以Typescript進行實作。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="DNS sinkhole">
+<meta property="og:url" content="https://pierre0210.github.io/2023/02/09/dns-sinkhole/index.html">
+<meta property="og:site_name" content="Pierre的踩坑筆記">
+<meta property="og:description" content="DNS sinkhole是一種特殊的DNS伺服器，對黑名單內的域名查詢給出無效結果，以此達到阻擋特定網域的目的，本文將以Typescript進行實作。">
+<meta property="og:locale" content="zh_TW">
+<meta property="og:image" content="https://pierre0210.github.io/2023/02/09/dns-sinkhole/dns-packet.png">
+<meta property="og:image" content="https://pierre0210.github.io/2023/02/09/dns-sinkhole/packet-header.png">
+<meta property="og:image" content="https://pierre0210.github.io/2023/02/09/dns-sinkhole/packet-question.png">
+<meta property="og:image" content="https://pierre0210.github.io/2023/02/09/dns-sinkhole/demo-block.png">
+<meta property="article:published_time" content="2023-02-09T12:00:00.000Z">
+<meta property="article:modified_time" content="2024-06-08T12:34:55.479Z">
+<meta property="article:author" content="Pierre">
+<meta property="article:tag" content="Node.js">
+<meta property="article:tag" content="Typescript">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://pierre0210.github.io/2023/02/09/dns-sinkhole/dns-packet.png">
+
+
+<link rel="canonical" href="https://pierre0210.github.io/2023/02/09/dns-sinkhole/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-TW","comments":true,"permalink":"https://pierre0210.github.io/2023/02/09/dns-sinkhole/","path":"2023/02/09/dns-sinkhole/","title":"DNS sinkhole"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>DNS sinkhole | Pierre的踩坑筆記</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+<link rel="alternate" href="/atom.xml" title="Pierre的踩坑筆記" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切換導航欄" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">Pierre的踩坑筆記</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">Web development / CTF</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜尋" role="button">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首頁</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>標籤</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分類</a></li>
+  </ul>
+</nav>
+
+
+
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目錄
+        </li>
+        <li class="sidebar-nav-overview">
+          本站概要
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%89%8D%E8%A8%80"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%B0%81%E5%8C%85%E7%B5%90%E6%A7%8B"><span class="nav-number">2.</span> <span class="nav-text">封包結構</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%A8%99%E9%A0%AD%E5%8D%80%E6%AE%B5"><span class="nav-number">2.1.</span> <span class="nav-text">標頭區段</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%95%8F%E9%A1%8C%E5%8D%80%E6%AE%B5"><span class="nav-number">2.2.</span> <span class="nav-text">問題區段</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%BB%91-%E7%99%BD%E5%90%8D%E5%96%AE-%E6%B2%89%E6%B4%9E"><span class="nav-number">3.</span> <span class="nav-text">黑&#x2F;白名單&amp;沉洞</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Repo"><span class="nav-number">4.</span> <span class="nav-text">Repo</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8F%83%E8%80%83%E8%B3%87%E6%96%99"><span class="nav-number">5.</span> <span class="nav-text">參考資料</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Pierre"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">Pierre</p>
+  <div class="site-description" itemprop="description">(╯°Д°)╯ ┻━┻</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">5</span>
+          <span class="site-state-item-name">文章</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-name">分類</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">7</span>
+        <span class="site-state-item-name">標籤</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/pierre0210" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;pierre0210" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i></a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:gamelauncher0210@gmail.com" title="E-Mail → mailto:gamelauncher0210@gmail.com" rel="noopener me" target="_blank"><i class="fa fa-envelope fa-fw"></i></a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://twitter.com/pierre_0210" title="Twitter → https:&#x2F;&#x2F;twitter.com&#x2F;pierre_0210" rel="noopener me" target="_blank"><i class="fab fa-twitter fa-fw"></i></a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="/atom.xml" title="RSS → &#x2F;atom.xml" rel="noopener me"><i class="fa fa-rss fa-fw"></i></a>
+      </span>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-TW">
+    <link itemprop="mainEntityOfPage" href="https://pierre0210.github.io/2023/02/09/dns-sinkhole/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="Pierre">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Pierre的踩坑筆記">
+      <meta itemprop="description" content="(╯°Д°)╯ ┻━┻">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="DNS sinkhole | Pierre的踩坑筆記">
+      <meta itemprop="description" content="DNS sinkhole是一種特殊的DNS伺服器，對黑名單內的域名查詢給出無效結果，以此達到阻擋特定網域的目的，本文將以Typescript進行實作。">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          DNS sinkhole
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">發表於</span>
+
+      <time title="創建時間：2023-02-09 20:00:00" itemprop="dateCreated datePublished" datetime="2023-02-09T20:00:00+08:00">2023-02-09</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分類於</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E5%AF%A6%E4%BD%9C/" itemprop="url" rel="index"><span itemprop="name">實作</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+            <div class="post-description">DNS sinkhole是一種特殊的DNS伺服器，對黑名單內的域名查詢給出無效結果，以此達到阻擋特定網域的目的，本文將以Typescript進行實作。</div>
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>DNS沉洞(DNS sinkhole)是一種特殊的DNS伺服器，對黑名單內的域名查詢給出無效結果(通常為NXDOMAIN或0.0.0.0)，以此達到阻擋特定網域的目的，本文將以Typescript進行實作。</p>
+<h2 id="封包結構"><a href="#封包結構" class="headerlink" title="封包結構"></a>封包結構</h2><p>DNS封包的結構可以分成五部分而這邊會用到的只有前三個區塊，分別為儲存查詢或回覆型態的<strong>Header</strong>(標頭區段)、儲存查詢內容的<strong>Question</strong>(問題區段)以及DNS回覆的<strong>Answer</strong>(答案區段)。</p>
+<p><img src="/2023/02/09/dns-sinkhole/dns-packet.png"></p>
+<h3 id="標頭區段"><a href="#標頭區段" class="headerlink" title="標頭區段"></a>標頭區段</h3><ul>
+<li>ID (16 bits): 識別碼，客戶端將會檢視伺服器回傳的此號碼辨識是否為己方發出之訊息。</li>
+<li>Flag (16 bits): <ul>
+<li>QR (1 bit): Question or Response 0表示查詢封包、1則為回應封包。</li>
+<li>OPCODE (4 bits): Operation Code 運作模式，0表示標準查詢(standard query)、1表示反向查詢(reversed query)、2表示狀態查詢(server status request)，一般常用標準查詢。</li>
+<li>AA (1 bit): Authoritative Answer 授權答案，在回應封包中表示查詢資料是否由管轄此域名之名稱伺服器發出。</li>
+<li>TC (1 bit): Truncation 截短，若此位元為1代表回應因過長被截短。</li>
+<li>RD (1 bit): Recursive Desired 是否期望遞迴查詢。</li>
+<li>RA (1 bit): Recursive Available 回應此伺服器是否支援遞迴。</li>
+<li>Z (3 bits): 保留位元，全0。</li>
+<li>RCODE (4 bits): Response Code 回應碼。0 無錯誤、1 格式錯誤、2 伺服器錯誤、3 名稱錯誤(權威名稱伺服器回應域名不存在NXDOMAIN)、4 不支援OPCODE類型、5 因政策等原因拒絕查詢</li>
+</ul>
+</li>
+<li>QDCOUNT (16 bits): 問題數，DNS伺服器軟體應該拒絕回應任何問題數不等於1的請求。</li>
+<li>ANCOUNT (16 bits): 回應封包的Resource Record數量。</li>
+<li>NSCOUNT (16 bits): 授權區段的Resource Record數量。</li>
+<li>ARCOUNT (16 bits): 額外的Resource Record數量。</li>
+</ul>
+<figure class="highlight ts"><figcaption><span>./src/interfaces/Flag.ts</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">interface</span> <span class="title class_">Flag</span> &#123;</span><br><span class="line">  <span class="attr">QR</span>: <span class="built_in">boolean</span>;</span><br><span class="line">  <span class="title class_">OPCode</span>: <span class="built_in">number</span>;</span><br><span class="line">  <span class="attr">AA</span>: <span class="built_in">boolean</span>;</span><br><span class="line">  <span class="attr">TC</span>: <span class="built_in">boolean</span>;</span><br><span class="line">  <span class="attr">RD</span>: <span class="built_in">boolean</span>;</span><br><span class="line">  <span class="attr">RA</span>: <span class="built_in">boolean</span>;</span><br><span class="line">  <span class="title class_">RCode</span>: <span class="built_in">number</span>;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<figure class="highlight ts"><figcaption><span>./src/interfaces/DnsHeader.ts</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">interface</span> <span class="title class_">DnsHeader</span> &#123;</span><br><span class="line">  <span class="attr">ID</span>: <span class="built_in">number</span>;</span><br><span class="line">  <span class="title class_">Flag</span>: <span class="title class_">Flag</span>;</span><br><span class="line">  <span class="title class_">QuestionCount</span>: <span class="built_in">number</span>;</span><br><span class="line">  <span class="title class_">RRCount</span>: <span class="built_in">number</span>;</span><br><span class="line">  <span class="title class_">AuthRRCount</span>: <span class="built_in">number</span>;</span><br><span class="line">  <span class="title class_">AddRRCount</span>: <span class="built_in">number</span>;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<p>對於DNS sinkhole來說解析DNS標頭主要有兩個值需要注意，回應時將RCODE設定為2(NXDOMAIN)以及由QDCOUNT判斷封包是否要進一步處理。</p>
+<figure class="highlight ts"><figcaption><span>./src/modules/dnsParser.ts</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> <span class="attr">flag</span>: <span class="title class_">Flag</span> = &#123;</span><br><span class="line">  <span class="attr">QR</span>: <span class="title class_">Boolean</span>(msg.<span class="title function_">readUintBE</span>(<span class="number">2</span>, <span class="number">2</span>) &gt;&gt; <span class="number">15</span>),</span><br><span class="line">  <span class="title class_">OPCode</span>: (msg.<span class="title function_">readUintBE</span>(<span class="number">2</span>, <span class="number">2</span>) &gt;&gt; <span class="number">11</span>) &amp; ((<span class="number">1</span> &lt;&lt; <span class="number">4</span>) - <span class="number">1</span>),</span><br><span class="line">  <span class="attr">AA</span>: <span class="title class_">Boolean</span>((msg.<span class="title function_">readUintBE</span>(<span class="number">2</span>, <span class="number">2</span>) &gt;&gt; <span class="number">10</span>) &amp; <span class="number">1</span>),</span><br><span class="line">  <span class="attr">TC</span>: <span class="title class_">Boolean</span>((msg.<span class="title function_">readUintBE</span>(<span class="number">2</span>, <span class="number">2</span>) &gt;&gt; <span class="number">9</span>) &amp; <span class="number">1</span>),</span><br><span class="line">  <span class="attr">RD</span>: <span class="title class_">Boolean</span>((msg.<span class="title function_">readUintBE</span>(<span class="number">2</span>, <span class="number">2</span>) &gt;&gt; <span class="number">8</span>) &amp; <span class="number">1</span>),</span><br><span class="line">  <span class="attr">RA</span>: <span class="title class_">Boolean</span>((msg.<span class="title function_">readUintBE</span>(<span class="number">2</span>, <span class="number">2</span>) &gt;&gt; <span class="number">7</span>) &amp; <span class="number">1</span>),</span><br><span class="line">  <span class="title class_">RCode</span>: msg.<span class="title function_">readUintBE</span>(<span class="number">2</span>, <span class="number">2</span>) &amp; ((<span class="number">1</span> &lt;&lt; <span class="number">5</span>) - <span class="number">1</span>)</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> <span class="attr">header</span>: <span class="title class_">DnsHeader</span> = &#123;</span><br><span class="line">  <span class="attr">ID</span>: msg.<span class="title function_">readUIntBE</span>(<span class="number">0</span>, <span class="number">2</span>),</span><br><span class="line">  <span class="title class_">Flag</span>: flag,</span><br><span class="line">  <span class="title class_">QuestionCount</span>: msg.<span class="title function_">readUintBE</span>(<span class="number">4</span>, <span class="number">2</span>),</span><br><span class="line">  <span class="title class_">RRCount</span>: msg.<span class="title function_">readUintBE</span>(<span class="number">6</span>, <span class="number">2</span>),</span><br><span class="line">  <span class="title class_">AuthRRCount</span>: msg.<span class="title function_">readUintBE</span>(<span class="number">8</span>, <span class="number">2</span>),</span><br><span class="line">  <span class="title class_">AddRRCount</span>: msg.<span class="title function_">readUintBE</span>(<span class="number">10</span>, <span class="number">2</span>)</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<p><img src="/2023/02/09/dns-sinkhole/packet-header.png"></p>
+<h3 id="問題區段"><a href="#問題區段" class="headerlink" title="問題區段"></a>問題區段</h3><ul>
+<li>QNAME: Question Name 欲查詢的域名，將域名以句號做分割在每一段前面加上此段字串之長度，並以0作為結尾，整體內容不含句號字元。<br>以<code>google.com</code>為例<table>
+<thead>
+<tr>
+<th>6</th>
+<th>g</th>
+<th>o</th>
+<th>o</th>
+<th>g</th>
+<th>l</th>
+<th>e</th>
+<th>3</th>
+<th>c</th>
+<th>o</th>
+<th>m</th>
+<th>0</th>
+</tr>
+</thead>
+</table>
+</li>
+<li>QTYPE: Question Type 問題型態，常見的有A(IP位址)、AAAA(IPv6)、NS(名稱伺服器)、MX(郵件伺服器)、PTR(反向查詢網域名稱)等。</li>
+<li>QCLASS: 一般情況下均為1(IN)</li>
+</ul>
+<figure class="highlight ts"><figcaption><span>./src/interfaces/DnsQuery.ts</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">interface</span> <span class="title class_">DnsQuery</span> &#123;</span><br><span class="line">  <span class="title class_">Name</span>: <span class="built_in">string</span>;</span><br><span class="line">  <span class="title class_">Type</span>: <span class="built_in">string</span>;</span><br><span class="line">  <span class="title class_">Class</span>: <span class="built_in">number</span>;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight ts"><figcaption><span>./src/modules/dnsParser.ts</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> domain = <span class="string">&quot;&quot;</span>;</span><br><span class="line"><span class="keyword">let</span> index = <span class="number">12</span>;</span><br><span class="line"><span class="keyword">let</span> subStringLength = msg.<span class="title function_">readUint8</span>(index++);</span><br><span class="line"></span><br><span class="line"><span class="keyword">while</span>(subStringLength != <span class="number">0</span>) &#123;</span><br><span class="line">  <span class="keyword">for</span>(<span class="keyword">let</span> i = <span class="number">0</span>; i &lt; subStringLength; i++) &#123;</span><br><span class="line">    domain = domain.<span class="title function_">padEnd</span>(domain.<span class="property">length</span> + <span class="number">1</span>, <span class="title class_">String</span>.<span class="title function_">fromCharCode</span>(msg.<span class="title function_">readUInt8</span>(index++)));</span><br><span class="line">  &#125;</span><br><span class="line">  subStringLength = msg.<span class="title function_">readUInt8</span>(index++);</span><br><span class="line">  <span class="keyword">if</span>(subStringLength != <span class="number">0</span>) &#123;</span><br><span class="line">    domain = domain.<span class="title function_">padEnd</span>(domain.<span class="property">length</span> + <span class="number">1</span>, <span class="string">&quot;.&quot;</span>);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> <span class="attr">query</span>: <span class="title class_">DnsQuery</span> = &#123;</span><br><span class="line">  <span class="title class_">Name</span>: domain,</span><br><span class="line">  <span class="title class_">Type</span>: <span class="title class_">ResourceRecord</span>[msg.<span class="title function_">readUIntBE</span>(index, <span class="number">2</span>)],</span><br><span class="line">  <span class="title class_">Class</span>: msg.<span class="title function_">readUIntBE</span>(index + <span class="number">2</span>, <span class="number">2</span>)</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<p><img src="/2023/02/09/dns-sinkhole/packet-question.png"></p>
+<h2 id="黑-白名單-沉洞"><a href="#黑-白名單-沉洞" class="headerlink" title="黑&#x2F;白名單&amp;沉洞"></a>黑&#x2F;白名單&amp;沉洞</h2><p>在接收到DNS封包後，會先檢查Header，若Header中的問題數不為1，將會回傳Format error。</p>
+<figure class="highlight ts"><figcaption><span>./src/modules/dnsHandler.ts</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> <span class="attr">domainIsSafe</span>: <span class="built_in">boolean</span> = <span class="literal">true</span>;</span><br><span class="line"><span class="keyword">const</span> <span class="title class_">Header</span> = <span class="title class_">HeaderParser</span>(msg);</span><br><span class="line"><span class="keyword">let</span> <span class="title class_">Query</span>: <span class="title class_">DnsQuery</span>;</span><br><span class="line"><span class="keyword">if</span>(<span class="title class_">Header</span>.<span class="property">QuestionCount</span> != <span class="number">1</span>) &#123;</span><br><span class="line">  <span class="keyword">const</span> errorResBuff = <span class="title class_">DnsSinker</span>(msg, <span class="number">1</span>);</span><br><span class="line"></span><br><span class="line">  server.<span class="title function_">send</span>(errorResBuff, rinfo.<span class="property">port</span>, rinfo.<span class="property">address</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>取得Query內的域名後，先對其與較短的白名單內的域名比對，若沒有符合的結果才會進行下一步黑名單的比對，以節省比對時間且較不會出現因為誤ban而導致部分網站服務無法使用的情形。</p>
+<figure class="highlight ts"><figcaption><span>./src/modules/dnsHandler.ts</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="title class_">Query</span> = <span class="title class_">QueryParser</span>(msg);</span><br><span class="line"><span class="keyword">if</span>(!server.<span class="property">WhiteList</span>.<span class="title function_">has</span>(<span class="title class_">Query</span>.<span class="property">Name</span>)) &#123;</span><br><span class="line">  <span class="keyword">if</span>(server.<span class="property">BlackList</span>.<span class="title function_">has</span>(<span class="title class_">Query</span>.<span class="property">Name</span>)) &#123;</span><br><span class="line">    domainIsSafe = <span class="literal">false</span>;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>通過黑名單檢查的域名將直接回傳dns.google的請求結果，未通過者則回傳NXDOMAIN。</p>
+<figure class="highlight ts"><figcaption><span>./src/modules/dnsHandler.ts</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span>(domainIsSafe) &#123;</span><br><span class="line">  <span class="keyword">const</span> dns = dgram.<span class="title function_">createSocket</span>(<span class="string">&quot;udp4&quot;</span>);</span><br><span class="line">  dns.<span class="title function_">on</span>(<span class="string">&quot;message&quot;</span>, <span class="function">(<span class="params">recvMsg, remoteInfo</span>) =&gt;</span> &#123;</span><br><span class="line">    server.<span class="title function_">send</span>(recvMsg, rinfo.<span class="property">port</span>, rinfo.<span class="property">address</span>);</span><br><span class="line">  &#125;);</span><br><span class="line">  dns.<span class="title function_">send</span>(msg, <span class="number">53</span>, <span class="string">&quot;8.8.8.8&quot;</span>);</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">else</span> &#123;</span><br><span class="line">  <span class="keyword">const</span> sinkMsg = <span class="title class_">DnsSinker</span>(msg, <span class="number">3</span>);</span><br><span class="line">  server.<span class="title function_">send</span>(sinkMsg, rinfo.<span class="property">port</span>, rinfo.<span class="property">address</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>nslookup的測試結果<br><img src="/2023/02/09/dns-sinkhole/demo-block.png"></p>
+<h2 id="Repo"><a href="#Repo" class="headerlink" title="Repo"></a>Repo</h2><p><a target="_blank" rel="noopener" href="https://github.com/pierre0210/dns-sinkhole">pierre0210&#x2F;dns-sinkhole</a></p>
+<h2 id="參考資料"><a href="#參考資料" class="headerlink" title="參考資料"></a>參考資料</h2><ul>
+<li><a target="_blank" rel="noopener" href="https://www.rfc-editor.org/rfc/rfc1035">RFC1035</a></li>
+<li><a target="_blank" rel="noopener" href="https://mislove.org/teaching/cs4700/spring11/handouts/project1-primer.pdf">Fundamentals of Computer Networking  Project 1: Simple DNS Client</a></li>
+<li><a target="_blank" rel="noopener" href="http://www.tsnien.idv.tw/Internet_WebBook/chap13/13-6%20DNS%20%E8%A8%8A%E6%81%AF%E6%A0%BC%E5%BC%8F.html">TCP&#x2F;IP 與 Internet 網路：第十三章 網域名稱系統 13-6 DNS 訊息格式</a></li>
+<li><a target="_blank" rel="noopener" href="https://stackoverflow.com/questions/32031349/what-does-qd-stand-for-in-dns-rfc1035">What does QD stand for in DNS RFC1035</a></li>
+</ul>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Node-js/" rel="tag"># Node.js</a>
+              <a href="/tags/Typescript/" rel="tag"># Typescript</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2022/12/10/imu101/" rel="prev" title="IMU 101">
+                  <i class="fa fa-angle-left"></i> IMU 101
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2023/02/18/incognito-4/" rel="next" title="Incognito CTF 4.0">
+                  Incognito CTF 4.0 <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 
+    <span itemprop="copyrightYear">2024</span>
+    <span class="with-love">
+      <i class="fa fa-code-commit"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">Pierre</span>
+  </div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a> 強力驅動
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="回到頂端">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script size="200" alpha="0.5" zIndex="-1" src="https://cdnjs.cloudflare.com/ajax/libs/ribbon.js/1.0.2/ribbon.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/sidebar.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+  <script src="/js/third-party/pace.js"></script>
+
+
+  
+
+
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">false</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"none","js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.js","integrity":"sha256-MASABpB4tYktI2Oitl4t+78w/lyA+D7b/s9GEP0JOGI="}}</script>
+<script src="/js/third-party/math/mathjax.js"></script>
+
+
+
+</body>
+</html>

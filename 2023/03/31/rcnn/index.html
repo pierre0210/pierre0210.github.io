@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: dark)"><meta name="generator" content="Hexo 7.2.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Noto+Sans+TC:300,300italic,400,400italic,700,700italic%7CUbuntu:300,300italic,400,400italic,700,700italic%7CRoboto+Mono:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha256-XOqroi11tY4EFQMR9ZYwZWKj5ZXiftSx36RRuC3anlA=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pace/1.2.4/themes/black/pace-theme-loading-bar.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pace/1.2.4/pace.min.js" integrity="sha256-gqd7YTjg/BtfqWSwsJOvndl0Bxc8gFImLEkXQT8+qj0=" crossorigin="anonymous"></script>
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"pierre0210.github.io","root":"/","images":"/images","scheme":"Gemini","darkmode":true,"version":"8.20.0","exturl":false,"sidebar":{"position":"right","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"copycode":{"enable":true,"style":"mac"},"fold":{"enable":false,"height":500},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜尋...","empty":"我們無法找到任何有關 ${query} 的搜索結果","hits_time":"${hits} 找到 ${time} 個結果","hits":"找到 ${hits} 個結果"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="Summary for https:&#x2F;&#x2F;arxiv.org&#x2F;abs&#x2F;1311.2524">
+<meta property="og:type" content="article">
+<meta property="og:title" content="R-CNN Note">
+<meta property="og:url" content="https://pierre0210.github.io/2023/03/31/rcnn/index.html">
+<meta property="og:site_name" content="Pierre的踩坑筆記">
+<meta property="og:description" content="Summary for https:&#x2F;&#x2F;arxiv.org&#x2F;abs&#x2F;1311.2524">
+<meta property="og:locale" content="zh_TW">
+<meta property="og:image" content="https://pierre0210.github.io/2023/03/31/rcnn/PpfvPAi.png">
+<meta property="og:image" content="https://pierre0210.github.io/2023/03/31/rcnn/kDeVHFb.png">
+<meta property="article:published_time" content="2023-03-31T05:45:17.000Z">
+<meta property="article:modified_time" content="2024-06-08T12:34:55.487Z">
+<meta property="article:author" content="Pierre">
+<meta property="article:tag" content="CV">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://pierre0210.github.io/2023/03/31/rcnn/PpfvPAi.png">
+
+
+<link rel="canonical" href="https://pierre0210.github.io/2023/03/31/rcnn/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-TW","comments":true,"permalink":"https://pierre0210.github.io/2023/03/31/rcnn/","path":"2023/03/31/rcnn/","title":"R-CNN Note"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>R-CNN Note | Pierre的踩坑筆記</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+<link rel="alternate" href="/atom.xml" title="Pierre的踩坑筆記" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切換導航欄" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">Pierre的踩坑筆記</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">Web development / CTF</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜尋" role="button">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首頁</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>標籤</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分類</a></li>
+  </ul>
+</nav>
+
+
+
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目錄
+        </li>
+        <li class="sidebar-nav-overview">
+          本站概要
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#R-CNN"><span class="nav-number">1.</span> <span class="nav-text">R-CNN</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Region-proposals"><span class="nav-number">1.1.</span> <span class="nav-text">Region proposals</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Selective-search"><span class="nav-number">1.1.1.</span> <span class="nav-text">Selective search</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Feature-extraction"><span class="nav-number">1.2.</span> <span class="nav-text">Feature extraction</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Classify-regions"><span class="nav-number">1.3.</span> <span class="nav-text">Classify regions</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Bounding-box-regression"><span class="nav-number">1.4.</span> <span class="nav-text">Bounding box regression</span></a></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Pierre"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">Pierre</p>
+  <div class="site-description" itemprop="description">(╯°Д°)╯ ┻━┻</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">5</span>
+          <span class="site-state-item-name">文章</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-name">分類</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">7</span>
+        <span class="site-state-item-name">標籤</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/pierre0210" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;pierre0210" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i></a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:gamelauncher0210@gmail.com" title="E-Mail → mailto:gamelauncher0210@gmail.com" rel="noopener me" target="_blank"><i class="fa fa-envelope fa-fw"></i></a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://twitter.com/pierre_0210" title="Twitter → https:&#x2F;&#x2F;twitter.com&#x2F;pierre_0210" rel="noopener me" target="_blank"><i class="fab fa-twitter fa-fw"></i></a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="/atom.xml" title="RSS → &#x2F;atom.xml" rel="noopener me"><i class="fa fa-rss fa-fw"></i></a>
+      </span>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-TW">
+    <link itemprop="mainEntityOfPage" href="https://pierre0210.github.io/2023/03/31/rcnn/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="Pierre">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Pierre的踩坑筆記">
+      <meta itemprop="description" content="(╯°Д°)╯ ┻━┻">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="R-CNN Note | Pierre的踩坑筆記">
+      <meta itemprop="description" content="Summary for https://arxiv.org/abs/1311.2524">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          R-CNN Note
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">發表於</span>
+
+      <time title="創建時間：2023-03-31 13:45:17" itemprop="dateCreated datePublished" datetime="2023-03-31T13:45:17+08:00">2023-03-31</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分類於</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E7%AD%86%E8%A8%98/" itemprop="url" rel="index"><span itemprop="name">筆記</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+            <div class="post-description">Summary for https://arxiv.org/abs/1311.2524</div>
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><h1 id="R-CNN"><a href="#R-CNN" class="headerlink" title="R-CNN"></a>R-CNN</h1><blockquote>
+<p>Goal: Object recognition<br>Paper: <a target="_blank" rel="noopener" href="https://arxiv.org/abs/1311.2524">https://arxiv.org/abs/1311.2524</a></p>
+</blockquote>
+<h2 id="Region-proposals"><a href="#Region-proposals" class="headerlink" title="Region proposals"></a>Region proposals</h2><p>Use selective search to extract 2000 region proposals per image.</p>
+<h3 id="Selective-search"><a href="#Selective-search" class="headerlink" title="Selective search"></a><a target="_blank" rel="noopener" href="http://www.huppelen.nl/publications/selectiveSearchDraft.pdf"><strong>Selective search</strong></a></h3><p>First use <a target="_blank" rel="noopener" href="https://link.springer.com/article/10.1023/b:visi.0000022288.19776.77">[13] Efficient Graph-Based Image Segmentation</a> to create initial regions. Then calculate the similarties $s(r_i,r_j)$ between every neighbouring regions. The similarity contains four parts $s_{color}$, $s_{texture}$, $s_{size}$ and $s_{fill}$, these measures are all in range $[0,1]$.</p>
+<ol>
+<li>$s_{color}(r_i,r_j)$ measures color similarity for a regular RGB or HSV image it obtains histograms using 25 bins for each channel $C_i &#x3D; {c_i^1,…,c_i^{n}}$ $n&#x3D;25\times3$ (The histograms are normalized using L1-norm) and the similarity is measured using histogram intersection $s_{color}(r_i,r_j)&#x3D;\sum\limits_{k&#x3D;1}^{n}min(c_i^k,c_j^k)$.</li>
+<li>$s_{texture}(r_i,r_j)$ measures texture similarity, it represents texture using SIFT-like algorithm which takes Gaussian derivatives in eight directions. Then for each channel it extracts a histogram using 10 bins $T_i &#x3D; \set{t_i^1,\dots,t_i^{n}}$ $n&#x3D;8\times10\times3$ (The histograms are normalized using L1-norm) abd the similarity is measured using histogram intersection $s_{texture}(r_i,r_j)&#x3D;\sum\limits_{k&#x3D;1}^{n}min(t_i^k,t_j^k)$.</li>
+<li>$s_{size}(r_i, r_j)$ in order to prevent a single region keeps merging other regions, this algorithm obtains a button up approach to encourage small regions to merge early $s_{size}(r_i,r_j)&#x3D;1-\dfrac{size(r_i)+size(r_j)}{size(im)}$, $size(r)$ gives the size of region $r$ in pixels.</li>
+<li>$s_{fill}(r_i,r_j)$ measures how well two regions fit into each other in order to fill gaps and avoid any holes in merging process. Define $BB_{ij}$ to be a bounding box around $r_i$ and $r_j$. $s_{fill}(r_i,r_j)&#x3D;1-\dfrac{size(BB_{ij})-size(r_i)-size(r_j)}{size(im)}$</li>
+</ol>
+<p>The final similarity is the combination of the four measures where $a_i$ is either $0$ or $1$.<br>$$s(r_i,r_j)&#x3D;a_1s_{color}(r_i,r_j)+a_2s_{texture}(r_i,r_j)+a_3s_{size}(r_i,r_j)+a_4s_{fill}(r_i,r_j)$$</p>
+<p><img src="/2023/03/31/rcnn/PpfvPAi.png"></p>
+<h2 id="Feature-extraction"><a href="#Feature-extraction" class="headerlink" title="Feature extraction"></a>Feature extraction</h2><p>First, the arbitrary-shaped regions are warped to the required size. Then the extraction step is done by foward a <a target="_blank" rel="noopener" href="https://stackoverflow.com/questions/44788133/how-does-mean-image-subtraction-work">mean-substracted</a> 227x227 RGB image through AlexNet which is pre-trained on ImageNet dataset.<br><img src="/2023/03/31/rcnn/kDeVHFb.png"></p>
+<blockquote>
+<p>Here might be confusing as the original paper <a target="_blank" rel="noopener" href="https://proceedings.neurips.cc/paper/2012/file/c399862d3b9d6b76c8436e924a68c45b-Paper.pdf">ImageNet Classification with Deep Convolutional Neural Networks</a> states that the size of input image is 224x224. According to <a target="_blank" rel="noopener" href="https://datascience.stackexchange.com/questions/29245/what-is-the-input-size-of-alex-net">this discussion</a> this is a mistake, the layer size will only make sense if the input size is 227x227. Moreover, Caffe framework, whick is used in this paper, expects the same input size as well.</p>
+</blockquote>
+<h2 id="Classify-regions"><a href="#Classify-regions" class="headerlink" title="Classify regions"></a>Classify regions</h2><p>After extracting feature vector for every region proposals, each feature vector is then scored by the SVM trained for each class.</p>
+<h2 id="Bounding-box-regression"><a href="#Bounding-box-regression" class="headerlink" title="Bounding box regression"></a>Bounding box regression</h2><p>Predict a new bounding box for the detection using a class-specific bounding box regressor as the bounding box extracted by selective search might have a relative low IoU. By adjusting the bounding box closer to ground-truth, we can get a more accurate detection result.</p>
+<p>Input of the regressor is a set of training pairs ${(P^i, G^i)}_{i&#x3D;1,\dots,N}$, where $P^i&#x3D;(P_x^i,P_y^i,P_w^i,P_h^i)$ is the proposal bounding box and $G^i&#x3D;(G_x^i,G_y^i,G_w^i,G_h^i)$ is the ground-truth bounding box. The goal is to find a transformation that maps $P$ to $G$.<br>$$<br>\displaylines{<br>  \hat{G}_x&#x3D;P_wd_x(P)+P_x\\<br>  \hat{G}_y&#x3D;P_hd_y(P)+P_y\\<br>  \hat{G}_w&#x3D;P_w\ \text{exp}(d_w(P))\\<br>  \hat{G}_h&#x3D;P_h\ \text{exp}(d_h(P))<br>}<br>$$</p>
+<p>$d_x$, $d_y$ specify a <a target="_blank" rel="noopener" href="https://stackoverflow.com/questions/55553747/what-is-scale-invariance-and-log-space-translations-of-a-bounding-box">scale-invarient</a> translation of the center of the bounding box, while $d_w$, $d_h$ specify a log-space translation. Transform function is modeled as $d_\star(P)&#x3D;\textbf{w}_\star^T\phi_5(P),\ \star \in \set{ x, y, w, h }$ where $\phi_5(P)$ is the feature vector output by pool5 of the CNN used in feature extraction, $\textbf{w}_\star$ is a learnable model parameter vector. This paper applies SSE(Error Sum of Squares) loss with L2 regularization.</p>
+<p>$$<br>\displaylines{<br>  \mathcal{L} &#x3D; \sum_{i}^{N}(t^i_\star-d_\star(P^i))^2+\lambda\lVert{\hat{\textbf{w}}_\star}\rVert^2 \\<br>  \textbf{w}_\star &#x3D; \underset{\hat{\textbf{w}}_\star}{\text{argmin}}\ \mathcal{L}<br>}<br>$$</p>
+<p>$$<br>\displaylines{<br>  t_x &#x3D; (G_x-P_x)&#x2F;P_x \\<br>  t_y &#x3D; (G_y-P_y)&#x2F;P_y \\<br>  t_w &#x3D; \text{log}(G_w&#x2F;P_w) \\<br>  t_h &#x3D; \text{log}(G_h&#x2F;P_h)<br>}<br>$$</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/CV/" rel="tag"># CV</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2023/02/18/incognito-4/" rel="prev" title="Incognito CTF 4.0">
+                  <i class="fa fa-angle-left"></i> Incognito CTF 4.0
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2024/06/08/ais3-pre-exam-2024/" rel="next" title="AIS3 2024 Pre-Exam Writeup">
+                  AIS3 2024 Pre-Exam Writeup <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 
+    <span itemprop="copyrightYear">2024</span>
+    <span class="with-love">
+      <i class="fa fa-code-commit"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">Pierre</span>
+  </div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a> 強力驅動
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="回到頂端">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script size="200" alpha="0.5" zIndex="-1" src="https://cdnjs.cloudflare.com/ajax/libs/ribbon.js/1.0.2/ribbon.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/sidebar.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+  <script src="/js/third-party/pace.js"></script>
+
+
+  
+
+
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">true</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"none","js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.js","integrity":"sha256-MASABpB4tYktI2Oitl4t+78w/lyA+D7b/s9GEP0JOGI="}}</script>
+<script src="/js/third-party/math/mathjax.js"></script>
+
+
+
+</body>
+</html>
