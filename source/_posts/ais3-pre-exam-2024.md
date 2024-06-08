@@ -1,4 +1,10 @@
-# AIS3 2024 Pre-Exam Writeup
+---
+title: AIS3 2024 Pre-Exam Writeup
+date: 2024-06-08 20:43:15
+tags: ['CTF']
+categories: ['比賽']
+description: AIS3 2024 Pre-Exam 解題記錄
+---
 
 ## Web
 
@@ -137,9 +143,3 @@ print()
 ```
 
 flag: `AIS3{G0D_D4MN_4N9R_15_5UP3R_P0W3RFU1!!!}`
-
-<style>
-code {
-  white-space : pre-wrap !important;
-}
-</style>
