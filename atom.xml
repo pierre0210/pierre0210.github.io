@@ -6,7 +6,7 @@
   <link href="https://pierre0210.github.io/atom.xml" rel="self"/>
   
   <link href="https://pierre0210.github.io/"/>
-  <updated>2024-06-08T12:45:22.688Z</updated>
+  <updated>2024-06-08T13:01:46.094Z</updated>
   <id>https://pierre0210.github.io/</id>
   
   <author>
@@ -21,7 +21,7 @@
     <link href="https://pierre0210.github.io/2024/06/08/ais3-pre-exam-2024/"/>
     <id>https://pierre0210.github.io/2024/06/08/ais3-pre-exam-2024/</id>
     <published>2024-06-08T12:43:15.000Z</published>
-    <updated>2024-06-08T12:45:22.688Z</updated>
+    <updated>2024-06-08T13:01:46.094Z</updated>
     
     
     <summary type="html">AIS3 2024 Pre-Exam 解題記錄</summary>
@@ -40,7 +40,7 @@
     <link href="https://pierre0210.github.io/2023/03/31/rcnn/"/>
     <id>https://pierre0210.github.io/2023/03/31/rcnn/</id>
     <published>2023-03-31T05:45:17.000Z</published>
-    <updated>2024-06-08T12:34:55.487Z</updated>
+    <updated>2024-06-08T13:03:26.237Z</updated>
     
     
     <summary type="html">Summary for https://arxiv.org/abs/1311.2524</summary>
@@ -59,7 +59,7 @@
     <link href="https://pierre0210.github.io/2023/02/18/incognito-4/"/>
     <id>https://pierre0210.github.io/2023/02/18/incognito-4/</id>
     <published>2023-02-18T12:18:45.000Z</published>
-    <updated>2024-06-08T12:34:55.487Z</updated>
+    <updated>2024-06-08T13:02:16.325Z</updated>
     
     
     <summary type="html">Incognito CTF 解題紀錄</summary>
@@ -80,7 +80,7 @@
     <link href="https://pierre0210.github.io/2023/02/09/dns-sinkhole/"/>
     <id>https://pierre0210.github.io/2023/02/09/dns-sinkhole/</id>
     <published>2023-02-09T12:00:00.000Z</published>
-    <updated>2024-06-08T12:34:55.479Z</updated>
+    <updated>2024-06-08T13:02:44.061Z</updated>
     
     
     <summary type="html">DNS sinkhole是一種特殊的DNS伺服器，對黑名單內的域名查詢給出無效結果，以此達到阻擋特定網域的目的，本文將以Typescript進行實作。</summary>
@@ -101,7 +101,7 @@
     <link href="https://pierre0210.github.io/2022/12/10/imu101/"/>
     <id>https://pierre0210.github.io/2022/12/10/imu101/</id>
     <published>2022-12-10T10:12:06.000Z</published>
-    <updated>2024-06-08T12:34:55.479Z</updated>
+    <updated>2024-06-08T13:03:10.569Z</updated>
     
     
     <summary type="html">線性代數期末報告：使用不同濾波器處理IMU原始數據</summary>
