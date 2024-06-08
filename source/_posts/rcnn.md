@@ -24,11 +24,11 @@ First use [[13] Efficient Graph-Based Image Segmentation](https://link.springer.
 The final similarity is the combination of the four measures where $a_i$ is either $0$ or $1$.
 $$s(r_i,r_j)=a_1s_{color}(r_i,r_j)+a_2s_{texture}(r_i,r_j)+a_3s_{size}(r_i,r_j)+a_4s_{fill}(r_i,r_j)$$
 
-![](./PpfvPAi.png)
+![](PpfvPAi.png)
 
 ## Feature extraction
 First, the arbitrary-shaped regions are warped to the required size. Then the extraction step is done by foward a [mean-substracted](https://stackoverflow.com/questions/44788133/how-does-mean-image-subtraction-work) 227x227 RGB image through AlexNet which is pre-trained on ImageNet dataset. 
-![](./kDeVHFb.png)
+![](kDeVHFb.png)
 
 > Here might be confusing as the original paper [ImageNet Classification with Deep Convolutional Neural Networks](https://proceedings.neurips.cc/paper/2012/file/c399862d3b9d6b76c8436e924a68c45b-Paper.pdf) states that the size of input image is 224x224. According to [this discussion](https://datascience.stackexchange.com/questions/29245/what-is-the-input-size-of-alex-net) this is a mistake, the layer size will only make sense if the input size is 227x227. Moreover, Caffe framework, whick is used in this paper, expects the same input size as well.
 

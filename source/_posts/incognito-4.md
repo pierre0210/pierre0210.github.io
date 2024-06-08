@@ -13,15 +13,15 @@ SSRF `?url=http://0.0.0.0:9001/flag.txt`
 
 ### Low on options
 根據題目提示用OPTIONS request得到`As I said, I am low on options...`。 ~~一句廢話~~
-![](./loo-options.png)
+![](loo-options.png)
 索性把所有method全部試一次，PROPFIND request拿到flag。
-![](./loo-propfind.png)
+![](loo-propfind.png)
 
 ## Crypto
 
 ### Ancient
 拿到一個缺header的png檔，將header補上後得到有象形文字的圖片，以圖搜圖查到是十三世紀的一種記數方式，用[此網站](https://www.dcode.fr/cistercian-numbers)轉成數字對照Ascii table便可拿到flag。
-![](./challenge.png)
+![](challenge.png)
 
 ## Pyjail
 

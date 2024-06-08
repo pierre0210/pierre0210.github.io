@@ -11,7 +11,7 @@ DNS沉洞(DNS sinkhole)是一種特殊的DNS伺服器，對黑名單內的域名
 ## 封包結構
 DNS封包的結構可以分成五部分而這邊會用到的只有前三個區塊，分別為儲存查詢或回覆型態的**Header**(標頭區段)、儲存查詢內容的**Question**(問題區段)以及DNS回覆的**Answer**(答案區段)。
 
-![](./dns-packet.png)
+![](dns-packet.png)
 
 ### 標頭區段
 - ID (16 bits): 識別碼，客戶端將會檢視伺服器回傳的此號碼辨識是否為己方發出之訊息。
@@ -73,7 +73,7 @@ const header: DnsHeader = {
 };
 ```
 
-![](./packet-header.png)
+![](packet-header.png)
 
 ### 問題區段
 - QNAME: Question Name 欲查詢的域名，將域名以句號做分割在每一段前面加上此段字串之長度，並以0作為結尾，整體內容不含句號字元。
@@ -113,7 +113,7 @@ const query: DnsQuery = {
 };
 ```
 
-![](./packet-question.png)
+![](packet-question.png)
 
 ## 黑/白名單&沉洞
 在接收到DNS封包後，會先檢查Header，若Header中的問題數不為1，將會回傳Format error。
@@ -157,7 +157,7 @@ else {
 ```
 
 nslookup的測試結果
-![](./demo-block.png)
+![](demo-block.png)
 
 ## Repo
 [pierre0210/dns-sinkhole](https://github.com/pierre0210/dns-sinkhole)
