@@ -1,7 +1,7 @@
 ---
 title: DNS sinkhole
 tags: ['Node.js', 'Typescript']
-categories: ['實作']
+categories: ['Project']
 date: 2023-02-09 20:00:00
 description: DNS sinkhole是一種特殊的DNS伺服器，對黑名單內的域名查詢給出無效結果，以此達到阻擋特定網域的目的，本文將以Typescript進行實作。
 ---

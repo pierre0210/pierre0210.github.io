@@ -2,7 +2,7 @@
 title: AIS3 2024 Pre-Exam Writeup
 date: 2024-06-08 20:43:15
 tags: ['CTF']
-categories: ['比賽']
+categories: ['Competition']
 description: AIS3 2024 Pre-Exam 解題記錄
 ---
 

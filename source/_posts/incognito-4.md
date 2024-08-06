@@ -2,7 +2,7 @@
 title: Incognito CTF 4.0
 date: 2023-02-18 20:18:45
 tags: ['CTF', 'Python']
-categories: ['比賽']
+categories: ['Competition']
 description: Incognito CTF 解題紀錄
 ---
 

@@ -1,0 +1,23 @@
+<% const categoryPath = config.category_dir.split("/").filter((path) => path) %>
+<% const paginationPath = config.pagination_dir.split("/").filter((path) => path) %>
+<% const categories =
+    page.path.split("/").slice(categoryPath.length,
+    page.path.split("/").length - 1 - (page.current > 1 ? paginationPath.length + 1 : 0)) %>
+<main>
+    <h1>
+        <span class="category-tree">
+        <% this_category_tree(categories, site.categories, categories.length).forEach((category) => { %>
+            <span><%= category.name %></span>
+            <span class="separator">/</span>
+        <% }) %>
+        </span>
+    </h1>
+    <ul class="theme-list posts-list">
+        <% page.posts.forEach((post) => { %>
+            <%- partial(
+                "partials/post-li",
+                { post, categories, depth: Infinity }
+            ) %>
+        <% }) %>
+    </ul>
+</main>
