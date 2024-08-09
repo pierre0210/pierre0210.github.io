@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
-  <title>Try &amp; Err</title>
+  <title>Pierre&#39;s Blog</title>
   <icon>https://pierre0210.github.io/icon.png</icon>
   <subtitle>Web development / CTF</subtitle>
   <link href="https://pierre0210.github.io/atom.xml" rel="self"/>

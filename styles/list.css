@@ -7,14 +7,14 @@
   margin: 0.25rem 0;
 }
 .theme-list li a {
-  color: #333;
+  color: #ededed;
   position: relative;
   display: block;
   text-decoration: none;
 }
 .theme-list li a::after {
   content: "";
-  border: 1px dashed #808080;
+  border: 1px dashed #a6a6a6;
   position: absolute;
   bottom: 1ch;
   left: 0;
@@ -22,7 +22,7 @@
   z-index: -1;
 }
 .theme-list li a span {
-  background-color: #fff;
+  background-color: #2f3841;
   padding-right: 0.5rem;
 }
 .posts-list li {
@@ -30,7 +30,7 @@
   gap: 0.5rem;
 }
 .posts-list span.side-info {
-  color: #808080;
+  color: #a6a6a6;
   flex-shrink: 0;
 }
 .posts-list a.post-title {

@@ -8,7 +8,7 @@ figure.highlight {
   overflow: auto;
   font-family: "Cascadia Code", monospace;
   font-size: 0.8rem;
-  background-color: #f7f7f7;
+  background-color: #22272e;
 }
 figure.highlight > table {
   border-collapse: collapse;
@@ -21,8 +21,8 @@ figure.highlight > table th {
 figure.highlight figcaption {
   padding: 0.65rem 0.65rem 0.7rem;
   font-weight: 500;
-  background-color: #ededed;
-  color: #6a737d;
+  background-color: #282e36;
+  color: #768390;
 }
 figure.highlight figcaption * {
   margin: 0.5ch;
@@ -31,8 +31,8 @@ figure.highlight td.gutter {
   position: sticky;
   left: 0;
   padding: 0.75rem 1rem;
-  background-color: #ededed;
-  color: #6a737d;
+  background-color: #282e36;
+  color: #768390;
 }
 figure.highlight td.code {
   padding: 0 0.75rem;
@@ -56,7 +56,7 @@ figure.highlight code {
 */
 td.code pre,
 .hljs {
-  color: var(--foreground);
+  color: var(--main-color);
 }
 td.code .doctag,
 .hljs-doctag,
@@ -73,7 +73,7 @@ td.code .type,
 td.code .variable.language_,
 .hljs-variable.language_ {
 /* prettylights-syntax-keyword */
-  color: #d73a49;
+  color: #f47067;
 }
 td.code .title,
 .hljs-title,
@@ -83,7 +83,7 @@ td.code .title.class_.inherited__,
 .hljs-title.class_.inherited__,
 td.code .title.function_,
 .hljs-title.function_ {
-  color: #6f42c1;
+  color: #dcbdfb;
 }
 td.code .attr,
 .hljs-attr,
@@ -106,7 +106,7 @@ td.code .selector-class,
 td.code .selector-id,
 .hljs-selector-id {
 /* prettylights-syntax-constant */
-  color: #005cc5;
+  color: #6cb6ff;
 }
 td.code .regexp,
 .hljs-regexp,
@@ -115,14 +115,14 @@ td.code .string,
 td.code .meta .string,
 .hljs-meta .string {
 /* prettylights-syntax-string */
-  color: #032f62;
+  color: #96d0ff;
 }
 td.code .built_in,
 .hljs-built_in,
 td.code .symbol,
 .hljs-symbol {
 /* prettylights-syntax-variable */
-  color: #e36209;
+  color: #f69d50;
 }
 td.code .comment,
 .hljs-comment,
@@ -131,7 +131,7 @@ td.code .code,
 td.code .formula,
 .hljs-formula {
 /* prettylights-syntax-comment */
-  color: #6a737d;
+  color: #768390;
 }
 td.code .name,
 .hljs-name,
@@ -142,47 +142,47 @@ td.code .selector-tag,
 td.code .selector-pseudo,
 .hljs-selector-pseudo {
 /* prettylights-syntax-entity-tag */
-  color: #22863a;
+  color: #8ddb8c;
 }
 td.code .subst,
 .hljs-subst {
 /* prettylights-syntax-storage-modifier-import */
-  color: #24292e;
+  color: #adbac7;
 }
 td.code .section,
 .hljs-section {
 /* prettylights-syntax-markup-heading */
-  color: #005cc5;
+  color: #6cb6ff;
   font-weight: bold;
 }
 td.code .bullet,
 .hljs-bullet {
 /* prettylights-syntax-markup-list */
-  color: #735c0f;
+  color: #eac55f;
 }
 td.code .emphasis,
 .hljs-emphasis {
 /* prettylights-syntax-markup-italic */
-  color: #24292e;
+  color: #adbac7;
   font-style: italic;
 }
 td.code .strong,
 .hljs-strong {
 /* prettylights-syntax-markup-bold */
-  color: #24292e;
+  color: #adbac7;
   font-weight: bold;
 }
 td.code .addition,
 .hljs-addition {
 /* prettylights-syntax-markup-inserted */
-  color: #22863a;
-  background-color: #f0fff4;
+  color: #8ddb8c;
+  background-color: #1b4721;
 }
 td.code .deletion,
 .hljs-deletion {
 /* prettylights-syntax-markup-deleted */
-  color: #b31d28;
-  background-color: #ffeef0;
+  color: #ffd8d3;
+  background-color: #78191b;
 }
 td.code .marked,
 .hljs-marked {
@@ -191,7 +191,7 @@ td.code .marked,
 code {
   font-family: "Cascadia Code", monospace;
   font-size: 0.8rem;
-  background-color: #f7f7f7;
+  background-color: #22272e;
 }
 main header {
   margin-bottom: 1rem;
@@ -200,7 +200,7 @@ main header h1 {
   margin-bottom: 0.25rem;
 }
 main header div {
-  color: #808080;
+  color: #a6a6a6;
   font-size: 0.9rem;
 }
 main header div > * {
