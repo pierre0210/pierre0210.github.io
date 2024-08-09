@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
-  <title>Pierre的踩坑筆記</title>
+  <title>Try &amp; Err</title>
   <icon>https://pierre0210.github.io/icon.png</icon>
   <subtitle>Web development / CTF</subtitle>
   <link href="https://pierre0210.github.io/atom.xml" rel="self"/>
   
   <link href="https://pierre0210.github.io/"/>
-  <updated>2024-06-08T13:01:46.094Z</updated>
+  <updated>2024-08-06T14:56:16.627Z</updated>
   <id>https://pierre0210.github.io/</id>
   
   <author>
@@ -21,14 +21,14 @@
     <link href="https://pierre0210.github.io/2024/06/08/ais3-pre-exam-2024/"/>
     <id>https://pierre0210.github.io/2024/06/08/ais3-pre-exam-2024/</id>
     <published>2024-06-08T12:43:15.000Z</published>
-    <updated>2024-06-08T13:01:46.094Z</updated>
+    <updated>2024-08-06T14:56:16.627Z</updated>
     
     
     <summary type="html">AIS3 2024 Pre-Exam 解題記錄</summary>
     
     
     
-    <category term="比賽" scheme="https://pierre0210.github.io/categories/%E6%AF%94%E8%B3%BD/"/>
+    <category term="Competition" scheme="https://pierre0210.github.io/categories/Competition/"/>
     
     
     <category term="CTF" scheme="https://pierre0210.github.io/tags/CTF/"/>
@@ -36,18 +36,18 @@
   </entry>
   
   <entry>
-    <title>R-CNN Note</title>
+    <title>[Summary] R-CNN</title>
     <link href="https://pierre0210.github.io/2023/03/31/rcnn/"/>
     <id>https://pierre0210.github.io/2023/03/31/rcnn/</id>
     <published>2023-03-31T05:45:17.000Z</published>
-    <updated>2024-06-08T13:03:26.237Z</updated>
+    <updated>2024-08-06T14:56:40.591Z</updated>
     
     
     <summary type="html">Summary for https://arxiv.org/abs/1311.2524</summary>
     
     
     
-    <category term="筆記" scheme="https://pierre0210.github.io/categories/%E7%AD%86%E8%A8%98/"/>
+    <category term="Note" scheme="https://pierre0210.github.io/categories/Note/"/>
     
     
     <category term="CV" scheme="https://pierre0210.github.io/tags/CV/"/>
@@ -59,14 +59,14 @@
     <link href="https://pierre0210.github.io/2023/02/18/incognito-4/"/>
     <id>https://pierre0210.github.io/2023/02/18/incognito-4/</id>
     <published>2023-02-18T12:18:45.000Z</published>
-    <updated>2024-06-08T13:02:16.325Z</updated>
+    <updated>2024-08-06T14:56:35.707Z</updated>
     
     
     <summary type="html">Incognito CTF 解題紀錄</summary>
     
     
     
-    <category term="比賽" scheme="https://pierre0210.github.io/categories/%E6%AF%94%E8%B3%BD/"/>
+    <category term="Competition" scheme="https://pierre0210.github.io/categories/Competition/"/>
     
     
     <category term="CTF" scheme="https://pierre0210.github.io/tags/CTF/"/>
@@ -80,14 +80,14 @@
     <link href="https://pierre0210.github.io/2023/02/09/dns-sinkhole/"/>
     <id>https://pierre0210.github.io/2023/02/09/dns-sinkhole/</id>
     <published>2023-02-09T12:00:00.000Z</published>
-    <updated>2024-06-08T13:02:44.061Z</updated>
+    <updated>2024-08-06T14:56:22.847Z</updated>
     
     
     <summary type="html">DNS sinkhole是一種特殊的DNS伺服器，對黑名單內的域名查詢給出無效結果，以此達到阻擋特定網域的目的，本文將以Typescript進行實作。</summary>
     
     
     
-    <category term="實作" scheme="https://pierre0210.github.io/categories/%E5%AF%A6%E4%BD%9C/"/>
+    <category term="Project" scheme="https://pierre0210.github.io/categories/Project/"/>
     
     
     <category term="Node.js" scheme="https://pierre0210.github.io/tags/Node-js/"/>
@@ -101,14 +101,14 @@
     <link href="https://pierre0210.github.io/2022/12/10/imu101/"/>
     <id>https://pierre0210.github.io/2022/12/10/imu101/</id>
     <published>2022-12-10T10:12:06.000Z</published>
-    <updated>2024-06-08T13:03:10.569Z</updated>
+    <updated>2024-08-06T14:56:29.863Z</updated>
     
     
     <summary type="html">線性代數期末報告：使用不同濾波器處理IMU原始數據</summary>
     
     
     
-    <category term="實作" scheme="https://pierre0210.github.io/categories/%E5%AF%A6%E4%BD%9C/"/>
+    <category term="Project" scheme="https://pierre0210.github.io/categories/Project/"/>
     
     
     <category term="STM32" scheme="https://pierre0210.github.io/tags/STM32/"/>

@@ -1,247 +1,111 @@
 <!DOCTYPE html>
-<html lang="zh-TW">
-<head>
-  <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width">
-<meta name="theme-color" content="#222" media="(prefers-color-scheme: light)">
-<meta name="theme-color" content="#222" media="(prefers-color-scheme: dark)"><meta name="generator" content="Hexo 7.2.0">
-
-  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
-  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png">
-  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png">
-  <link rel="mask-icon" href="/images/logo.svg" color="#222">
-
-<link rel="stylesheet" href="/css/main.css">
-
-<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Noto+Sans+TC:300,300italic,400,400italic,700,700italic%7CUbuntu:300,300italic,400,400italic,700,700italic%7CRoboto+Mono:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
-
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha256-XOqroi11tY4EFQMR9ZYwZWKj5ZXiftSx36RRuC3anlA=" crossorigin="anonymous">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pace/1.2.4/themes/black/pace-theme-loading-bar.css">
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/pace/1.2.4/pace.min.js" integrity="sha256-gqd7YTjg/BtfqWSwsJOvndl0Bxc8gFImLEkXQT8+qj0=" crossorigin="anonymous"></script>
-
-<script class="next-config" data-name="main" type="application/json">{"hostname":"pierre0210.github.io","root":"/","images":"/images","scheme":"Gemini","darkmode":true,"version":"8.20.0","exturl":false,"sidebar":{"position":"right","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"copycode":{"enable":true,"style":"mac"},"fold":{"enable":false,"height":500},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜尋...","empty":"我們無法找到任何有關 ${query} 的搜索結果","hits_time":"${hits} 找到 ${time} 個結果","hits":"找到 ${hits} 個結果"}}</script><script src="/js/config.js"></script>
-
-    <meta name="description" content="DNS sinkhole是一種特殊的DNS伺服器，對黑名單內的域名查詢給出無效結果，以此達到阻擋特定網域的目的，本文將以Typescript進行實作。">
-<meta property="og:type" content="article">
-<meta property="og:title" content="DNS sinkhole">
-<meta property="og:url" content="https://pierre0210.github.io/2023/02/09/dns-sinkhole/index.html">
-<meta property="og:site_name" content="Pierre的踩坑筆記">
-<meta property="og:description" content="DNS sinkhole是一種特殊的DNS伺服器，對黑名單內的域名查詢給出無效結果，以此達到阻擋特定網域的目的，本文將以Typescript進行實作。">
-<meta property="og:locale" content="zh_TW">
-<meta property="og:image" content="https://pierre0210.github.io/2023/02/09/dns-sinkhole/dns-packet.png">
-<meta property="og:image" content="https://pierre0210.github.io/2023/02/09/dns-sinkhole/packet-header.png">
-<meta property="og:image" content="https://pierre0210.github.io/2023/02/09/dns-sinkhole/packet-question.png">
-<meta property="og:image" content="https://pierre0210.github.io/2023/02/09/dns-sinkhole/demo-block.png">
-<meta property="article:published_time" content="2023-02-09T12:00:00.000Z">
-<meta property="article:modified_time" content="2024-06-08T13:02:44.061Z">
-<meta property="article:author" content="Pierre">
-<meta property="article:tag" content="Node.js">
-<meta property="article:tag" content="Typescript">
-<meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://pierre0210.github.io/2023/02/09/dns-sinkhole/dns-packet.png">
-
-
-<link rel="canonical" href="https://pierre0210.github.io/2023/02/09/dns-sinkhole/">
-
-
-
-<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-TW","comments":true,"permalink":"https://pierre0210.github.io/2023/02/09/dns-sinkhole/","path":"2023/02/09/dns-sinkhole/","title":"DNS sinkhole"}</script>
-
-<script class="next-config" data-name="calendar" type="application/json">""</script>
-<title>DNS sinkhole | Pierre的踩坑筆記</title>
-  
-
-
-
-
-
-
-
-
-  <noscript>
-    <link rel="stylesheet" href="/css/noscript.css">
-  </noscript>
-<link rel="alternate" href="/atom.xml" title="Pierre的踩坑筆記" type="application/atom+xml">
-</head>
-
-<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
-  <div class="headband"></div>
-
-  <main class="main">
-    <div class="column">
-      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
-  <div class="site-nav-toggle">
-    <div class="toggle" aria-label="切換導航欄" role="button">
-        <span class="toggle-line"></span>
-        <span class="toggle-line"></span>
-        <span class="toggle-line"></span>
-    </div>
-  </div>
-
-  <div class="site-meta">
-
-    <a href="/" class="brand" rel="start">
-      <i class="logo-line"></i>
-      <p class="site-title">Pierre的踩坑筆記</p>
-      <i class="logo-line"></i>
-    </a>
-      <p class="site-subtitle" itemprop="description">Web development / CTF</p>
-  </div>
-
-  <div class="site-nav-right">
-    <div class="toggle popup-trigger" aria-label="搜尋" role="button">
-    </div>
-  </div>
-</div>
-
-
-
-<nav class="site-nav">
-  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首頁</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>標籤</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分類</a></li>
-  </ul>
-</nav>
-
-
-
-
-</header>
+<html>
+    <head>
         
-  
-  <aside class="sidebar">
 
-    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
-      <ul class="sidebar-nav">
-        <li class="sidebar-nav-toc">
-          文章目錄
-        </li>
-        <li class="sidebar-nav-overview">
-          本站概要
-        </li>
-      </ul>
 
-      <div class="sidebar-panel-container">
-        <!--noindex-->
-        <div class="post-toc-wrap sidebar-panel">
-            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%89%8D%E8%A8%80"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%B0%81%E5%8C%85%E7%B5%90%E6%A7%8B"><span class="nav-number">2.</span> <span class="nav-text">封包結構</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%A8%99%E9%A0%AD%E5%8D%80%E6%AE%B5"><span class="nav-number">2.1.</span> <span class="nav-text">標頭區段</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%95%8F%E9%A1%8C%E5%8D%80%E6%AE%B5"><span class="nav-number">2.2.</span> <span class="nav-text">問題區段</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%BB%91-%E7%99%BD%E5%90%8D%E5%96%AE-%E6%B2%89%E6%B4%9E"><span class="nav-number">3.</span> <span class="nav-text">黑&#x2F;白名單&amp;沉洞</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Repo"><span class="nav-number">4.</span> <span class="nav-text">Repo</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8F%83%E8%80%83%E8%B3%87%E6%96%99"><span class="nav-number">5.</span> <span class="nav-text">參考資料</span></a></li></ol></div>
-        </div>
-        <!--/noindex-->
 
-        <div class="site-overview-wrap sidebar-panel">
-          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
-    <img class="site-author-image" itemprop="image" alt="Pierre"
-      src="/images/avatar.png">
-  <p class="site-author-name" itemprop="name">Pierre</p>
-  <div class="site-description" itemprop="description">(╯°Д°)╯ ┻━┻</div>
-</div>
-<div class="site-state-wrap animated">
-  <nav class="site-state">
-      <div class="site-state-item site-state-posts">
-        <a href="/archives/">
-          <span class="site-state-item-count">5</span>
-          <span class="site-state-item-name">文章</span>
-        </a>
-      </div>
-      <div class="site-state-item site-state-categories">
-          <a href="/categories/">
-        <span class="site-state-item-count">3</span>
-        <span class="site-state-item-name">分類</span></a>
-      </div>
-      <div class="site-state-item site-state-tags">
-          <a href="/tags/">
-        <span class="site-state-item-count">7</span>
-        <span class="site-state-item-name">標籤</span></a>
-      </div>
-  </nav>
-</div>
-  <div class="links-of-author animated">
-      <span class="links-of-author-item">
-        <a href="https://github.com/pierre0210" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;pierre0210" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i></a>
-      </span>
-      <span class="links-of-author-item">
-        <a href="mailto:gamelauncher0210@gmail.com" title="E-Mail → mailto:gamelauncher0210@gmail.com" rel="noopener me" target="_blank"><i class="fa fa-envelope fa-fw"></i></a>
-      </span>
-      <span class="links-of-author-item">
-        <a href="https://twitter.com/pierre_0210" title="Twitter → https:&#x2F;&#x2F;twitter.com&#x2F;pierre_0210" rel="noopener me" target="_blank"><i class="fab fa-twitter fa-fw"></i></a>
-      </span>
-      <span class="links-of-author-item">
-        <a href="/atom.xml" title="RSS → &#x2F;atom.xml" rel="noopener me"><i class="fa fa-rss fa-fw"></i></a>
-      </span>
-  </div>
 
-        </div>
-      </div>
-    </div>
+
+
+
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+
+    <link rel="shortcut icon" href="/images/favicon-16x16.png" />
+
+
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link
+    href="https://fonts.googleapis.com/css2?family=PT+Serif:ital,wght@0,400;0,700;1,400;1,700&display=swap"
+    rel="stylesheet"
+/>
+<link
+    href="https://cdn.jsdelivr.net/npm/@fontsource/cascadia-code@4.2.1/index.min.css"
+    rel="stylesheet"
+/>
+
+
+<link rel="stylesheet" href="/styles/main.css">
+
 
     
-  </aside>
+<link rel="stylesheet" href="/styles/post.css">
 
 
-    </div>
 
-    <div class="main-inner post posts-expand">
+<title>DNS sinkhole - Try &amp; Err</title>
 
+    <meta name="generator" content="Hexo 7.3.0"><link rel="alternate" href="/atom.xml" title="Try & Err" type="application/atom+xml">
+</head>
+    <body>
+        <header>
+    <h1>Try &amp; Err</h1>
+    <nav>
+        <ul>
+            <li><a href="/">Home</a></li>
+            
+                
+                    <li>
+                        <a href="/tags"
+                            ><span>Tags</span></a
+                        >
+                    </li>
+                
+                    <li>
+                        <a href="/categories"
+                            ><span>Categories</span></a
+                        >
+                    </li>
+                
+                    <li>
+                        <a href="/archives"
+                            ><span>Archives</span></a
+                        >
+                    </li>
+                
+            
+        </ul>
+    </nav>
+</header>
 
-  
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-TW">
-    <link itemprop="mainEntityOfPage" href="https://pierre0210.github.io/2023/02/09/dns-sinkhole/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.png">
-      <meta itemprop="name" content="Pierre">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Pierre的踩坑筆記">
-      <meta itemprop="description" content="(╯°Д°)╯ ┻━┻">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="DNS sinkhole | Pierre的踩坑筆記">
-      <meta itemprop="description" content="DNS sinkhole是一種特殊的DNS伺服器，對黑名單內的域名查詢給出無效結果，以此達到阻擋特定網域的目的，本文將以Typescript進行實作。">
-    </span>
-      <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-          DNS sinkhole
+        <main>
+    <header>
+        <h1>
+            
+                DNS sinkhole
+            
         </h1>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">發表於</span>
-
-      <time title="創建時間：2023-02-09 20:00:00" itemprop="dateCreated datePublished" datetime="2023-02-09T20:00:00+08:00">2023-02-09</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分類於</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E5%AF%A6%E4%BD%9C/" itemprop="url" rel="index"><span itemprop="name">實作</span></a>
-        </span>
-    </span>
-
-  
-</div>
-
-            <div class="post-description">DNS sinkhole是一種特殊的DNS伺服器，對黑名單內的域名查詢給出無效結果，以此達到阻擋特定網域的目的，本文將以Typescript進行實作。</div>
+        <div>
+            <time>2023-02-09</time>
+            <div class="post-categories">
+                
+                    <span class="category-tree">
+                        
+                            <span class="separator">/</span>
+                            <a href="/categories/Project/">Project</a>
+                        
+                    </span>
+                
+            </div>
+            <div class="post-tags">
+                
+                    <span class="tag">
+                        <span class="separator">#</span>
+                        <a href="/tags/Node-js/">Node.js</a>
+                    </span>
+                
+                    <span class="tag">
+                        <span class="separator">#</span>
+                        <a href="/tags/Typescript/">Typescript</a>
+                    </span>
+                
+            </div>
         </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody"><h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>DNS沉洞(DNS sinkhole)是一種特殊的DNS伺服器，對黑名單內的域名查詢給出無效結果(通常為NXDOMAIN或0.0.0.0)，以此達到阻擋特定網域的目的，本文將以Typescript進行實作。</p>
+    </header>
+    <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>DNS沉洞(DNS sinkhole)是一種特殊的DNS伺服器，對黑名單內的域名查詢給出無效結果(通常為NXDOMAIN或0.0.0.0)，以此達到阻擋特定網域的目的，本文將以Typescript進行實作。</p>
 <h2 id="封包結構"><a href="#封包結構" class="headerlink" title="封包結構"></a>封包結構</h2><p>DNS封包的結構可以分成五部分而這邊會用到的只有前三個區塊，分別為儲存查詢或回覆型態的<strong>Header</strong>(標頭區段)、儲存查詢內容的<strong>Question</strong>(問題區段)以及DNS回覆的<strong>Answer</strong>(答案區段)。</p>
 <p><img src="/2023/02/09/dns-sinkhole/dns-packet.png"></p>
 <h3 id="標頭區段"><a href="#標頭區段" class="headerlink" title="標頭區段"></a>標頭區段</h3><ul>
@@ -315,103 +179,39 @@
 <li><a target="_blank" rel="noopener" href="https://stackoverflow.com/questions/32031349/what-does-qd-stand-for-in-dns-rfc1035">What does QD stand for in DNS RFC1035</a></li>
 </ul>
 
+    <div class="gallery">
+        
     </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-          <div class="post-tags">
-              <a href="/tags/Node-js/" rel="tag"># Node.js</a>
-              <a href="/tags/Typescript/" rel="tag"># Typescript</a>
-          </div>
+</main>
 
         
-
-          <div class="post-nav">
-            <div class="post-nav-item">
-                <a href="/2022/12/10/imu101/" rel="prev" title="IMU 101">
-                  <i class="fa fa-angle-left"></i> IMU 101
+    <nav class="pagination">
+        <span class="prev">
+            
+                <a href="/2023/02/18/incognito-4/">
+                    Incognito CTF 4.0
                 </a>
-            </div>
-            <div class="post-nav-item">
-                <a href="/2023/02/18/incognito-4/" rel="next" title="Incognito CTF 4.0">
-                  Incognito CTF 4.0 <i class="fa fa-angle-right"></i>
+            
+        </span>
+        <span class="next">
+            
+                <a href="/2022/12/10/imu101/" >
+                    IMU 101
                 </a>
-            </div>
-          </div>
-    </footer>
-  </article>
-</div>
+            
+        </span>
+    </nav>
 
 
+        <footer>
+    <p>&copy; Pierre</p>
+    <p>
+        Powered by <a target="_blank" rel="noopener" href="https://hexo.io/">Hexo</a>,
+        <a target="_blank" rel="noopener" href="https://github.com/sunnybyeon/hexo-theme-dashed">Theme</a> by
+        <a target="_blank" rel="noopener" href="https://github.com/sunnybyeon">sunnybyeon</a>
+    </p>
+    
+</footer>
 
-
-
-
-</div>
-  </main>
-
-  <footer class="footer">
-    <div class="footer-inner">
-
-  <div class="copyright">
-    &copy; 
-    <span itemprop="copyrightYear">2024</span>
-    <span class="with-love">
-      <i class="fa fa-code-commit"></i>
-    </span>
-    <span class="author" itemprop="copyrightHolder">Pierre</span>
-  </div>
-  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a> 強力驅動
-  </div>
-
-    </div>
-  </footer>
-
-  
-  <div class="toggle sidebar-toggle" role="button">
-    <span class="toggle-line"></span>
-    <span class="toggle-line"></span>
-    <span class="toggle-line"></span>
-  </div>
-  <div class="sidebar-dimmer"></div>
-  <div class="back-to-top" role="button" aria-label="回到頂端">
-    <i class="fa fa-arrow-up fa-lg"></i>
-    <span>0%</span>
-  </div>
-  <div class="reading-progress-bar"></div>
-
-<noscript>
-  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
-</noscript>
-
-
-  
-  <script size="200" alpha="0.5" zIndex="-1" src="https://cdnjs.cloudflare.com/ajax/libs/ribbon.js/1.0.2/ribbon.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
-<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/sidebar.js"></script><script src="/js/next-boot.js"></script>
-
-  
-
-
-
-
-  <script src="/js/third-party/pace.js"></script>
-
-
-  
-
-
-
-
-  
-
-  <script class="next-config" data-name="enableMath" type="application/json">false</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"none","js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.js","integrity":"sha256-MASABpB4tYktI2Oitl4t+78w/lyA+D7b/s9GEP0JOGI="}}</script>
-<script src="/js/third-party/math/mathjax.js"></script>
-
-
-
-</body>
+    </body>
 </html>
