@@ -1,21 +1,21 @@
 @import "variables.styl"
 
-background = hsl(0, 0%, 97%)
-dark-background = hsl(0, 0%, 93%)
+background = #22272e
+dark-background = #282e36
 
 /* colors from https://github.com/highlightjs/highlight.js/blob/3e628edbe34d2ffb9166ff365f614f56621597be/src/styles/github.css */
-foreground = #24292e
-red = #d73a49
-dark-red = #b31d28
-light-red = #ffeef0
-magenta = #6f42c1
-cyan = #005cc5
-blue = #032f62
-orange = #e36209
-grey = #6a737d
-green = #22863a
-light-green = #f0fff4
-yellow = #735c0f
+main-color = #adbac7
+language-color = #f47067
+delete-color = #ffd8d3
+delete-background = #78191b
+function-color = #dcbdfb
+id-color = #6cb6ff
+meta-string-color = #96d0ff
+symbol-color = #f69d50
+formula-color = #768390
+pseudo-color = #8ddb8c
+addition-background = #1b4721
+bullet-color = #eac55f
 
 
 table.highlight, td, th
@@ -38,7 +38,7 @@ figure.highlight
         padding: 0.65rem 0.65rem 0.7rem
         font-weight: 500
         background-color: dark-background
-        color: grey
+        color: formula-color
 
         *
             margin: 0.5ch
@@ -48,7 +48,7 @@ figure.highlight
         left: 0
         padding: 0.75rem 1rem
         background-color: dark-background
-        color: grey
+        color: formula-color
     td.code
         padding: 0 0.75rem
     
@@ -72,72 +72,72 @@ figure.highlight
 
 td.code pre,
 .hljs {
-    color: var(--foreground);
+    color: var(--main-color);
 }
 
 td.code ., .hljs-
     &doctag, &keyword, &meta &keyword,
     &template-tag, &template-variable, &type, &variable.language_
         /* prettylights-syntax-keyword */
-        color: red
+        color: language-color
 
     &title, &title.class_, &title.class_.inherited__, &title.function_
     /* prettylights-syntax-entity */
-        color: magenta
+        color: function-color
 
     &attr, &attribute, &literal, &meta, &number, &operator,
     &variable, &selector-attr, &selector-class, &selector-id
         /* prettylights-syntax-constant */
-        color: cyan
+        color: id-color
     
     &regexp, &string, &meta .string
         /* prettylights-syntax-string */
-        color: blue
+        color: meta-string-color
 
     &built_in, &symbol
         /* prettylights-syntax-variable */
-        color: orange
+        color: symbol-color
 
     &comment, &code, &formula
         /* prettylights-syntax-comment */
-        color: grey
+        color: formula-color
     
     &name, &quote, &selector-tag, &selector-pseudo
         /* prettylights-syntax-entity-tag */
-        color: green
+        color: pseudo-color
 
     &subst
         /* prettylights-syntax-storage-modifier-import */
-        color: foreground
+        color: main-color
     
     &section
         /* prettylights-syntax-markup-heading */
-        color: cyan
+        color: id-color
         font-weight: bold
     
     &bullet
         /* prettylights-syntax-markup-list */
-        color: yellow
+        color: bullet-color
     
     &emphasis
         /* prettylights-syntax-markup-italic */
-        color: foreground
+        color: main-color
         font-style: italic
 
     &strong
         /* prettylights-syntax-markup-bold */
-        color: foreground
+        color: main-color
         font-weight: bold
     
     &addition
         /* prettylights-syntax-markup-inserted */
-        color: green
-        background-color: light-green
+        color: pseudo-color
+        background-color: addition-background
     
     &deletion
         /* prettylights-syntax-markup-deleted */
-        color: dark-red
-        background-color: light-red
+        color: delete-color
+        background-color: delete-background
     
     &marked 
         background-color: mark-color

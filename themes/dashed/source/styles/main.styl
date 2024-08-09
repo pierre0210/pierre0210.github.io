@@ -20,7 +20,8 @@ html
     padding: 30px 0
     overflow: auto
 body
-    color: foreground-color
+    color: very-light-color
+    background-color: dark-background-color
     font-family: serif-font
     margin: auto
     padding: 0 25px
@@ -35,8 +36,8 @@ h1
 main > header:first-child > h1
     margin-top: 0
 a
-    color: link-color
-    text-decoration-color: link-underline-color
+    color: dark-link-color
+    text-decoration-color: dark-link-underline-color
     text-decoration-thickness: 2px
     text-underline-position: under
     position: relative
@@ -60,7 +61,7 @@ blockquote
             margin-left: 0.2ch
 
     &.pullquote
-        background-color: very-light-color
+        background-color: slightly-light-color
         width: min(50%, 200px)
 
         &.left
@@ -75,11 +76,11 @@ blockquote
 pre, code
     overflow: auto
     font-family: monospace-font
-    background-color: very-light-color
+    background-color: slightly-light-color
     padding: 0.5ch 1ch
     border-radius: 0.65ch
 kbd
-    background-color: very-light-color
+    background-color: slightly-light-color
     padding: 0.4em 0.65rem
     border-radius: 0.15rem
     margin: 0.2rem calc(0.3rem + 2px) 0 0.3rem
@@ -90,15 +91,15 @@ kbd
     position: relative
     top: -1.5px
 mark
-    background-color: mark-color
+    background-color: dark-mark-color
 table
     border-collapse: collapse
-    border: 1px soild foreground-color
+    border: 1px soild very-light-color
 th
-    border-color: foreground-color
+    border-color: very-light-color
 
     &, /td
-        border: 1px solid light-colro
+        border: 1px solid slightly-light-color
         padding: 0.5rem
 div.video-container
     > iframe
